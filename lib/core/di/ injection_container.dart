@@ -10,6 +10,13 @@ import 'package:hotel_app/features/leave_request/data/repositories/leave_request
 import 'package:hotel_app/features/leave_request/domain/repositories/leave_request_repositories.dart';
 import 'package:hotel_app/features/leave_request/domain/use_cases/add_leave_request_use_case.dart';
 import 'package:hotel_app/features/leave_request/presentation/cubit/leave_request_cubit.dart';
+import 'package:hotel_app/features/tasks/data/data_sources/task_remote_data_sources.dart';
+import 'package:hotel_app/features/tasks/data/repositories/task_repositories_impl.dart';
+import 'package:hotel_app/features/tasks/domain/repositories/task_repositories.dart';
+import 'package:hotel_app/features/tasks/domain/use_cases/end_task.dart';
+import 'package:hotel_app/features/tasks/domain/use_cases/get_all_task.dart';
+import 'package:hotel_app/features/tasks/domain/use_cases/toggle_task.dart';
+import 'package:hotel_app/features/tasks/presentation/cubit/task_details_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,6 +35,12 @@ import '../../features/Auth/presentation/cubit/otp_cubit.dart';
 import '../../features/Auth/presentation/cubit/create_new_password_cubit.dart';
 
 import '../../features/complaints_request/presentation/cubit/complaints_request_cubit.dart';
+import '../../features/language/data/datasources/language_local_datasource.dart';
+import '../../features/language/data/repositories/language_repository_impl.dart';
+import '../../features/language/domain/repositories/language_repository.dart';
+import '../../features/language/domain/usecases/get_language_usecase.dart';
+import '../../features/language/domain/usecases/save_language_usecase.dart';
+import '../../features/language/presentation/cubit/language_cubit.dart';
 /// ---------------- NEWS ----------------
 import '../../features/news/data/data_sources/news_remote_datasource.dart';
 import '../../features/news/data/repositories/news_repositories_impl.dart';
@@ -41,6 +54,7 @@ import '../../features/onboarding/data/repository/onboarding_repository_impl.dar
 import '../../features/onboarding/domain/repositories/onboarding_repository.dart';
 import '../../features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import '../../features/tasks/data/data_sources/task_locale_data_sources.dart';
 
 final sl = GetIt.instance;
 
@@ -92,23 +106,7 @@ Future<void> init() async {
   sl.registerFactory(() => OtpCubit(sl()));
   sl.registerFactory(() => PasswordCubit(sl()));
 
-  /// ================= NEWS =================
-  sl.registerLazySingleton<NewsRemoteDataSources>(
-        () => NewsRemoteDataSourcesImp(
-      client: sl(),
-      authLocalDataSource: sl(),
-    ),
-  );
 
-  sl.registerLazySingleton<NewsRepositories>(
-        () => NewsRepositoriesImpl(
-      newsRemoteDataSources: sl(),
-    ),
-  );
-
-  sl.registerLazySingleton(() => GetAllNewsUseCase(sl()));
-
-  sl.registerFactory(() => NewsCubit(sl()));
   /////////==========complaints
   sl.registerLazySingleton<ComplaintsRemoteDataSources>(
         () => ComplaintsRemoteDataSourcesImpl(
@@ -142,4 +140,66 @@ Future<void> init() async {
 
   sl.registerFactory(() => LeaveRequestCubit(sl()));
 
+
+
+  sl.registerLazySingleton<LanguageLocalDataSource>(
+        () => LanguageLocalDataSourceImpl(),
+  );
+
+  // Repository
+  sl.registerLazySingleton<LanguageRepository>(
+        () => LanguageRepositoryImpl(sl()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetLanguageUseCase(sl()));
+  sl.registerLazySingleton(() => SaveLanguageUseCase(sl()));
+
+  // Cubit
+  sl.registerLazySingleton(
+        () => LanguageCubit(getLanguage: sl(), saveLanguage: sl()),
+  );
+
+  /// ================= NEWS =================
+  sl.registerLazySingleton<NewsRemoteDataSources>(
+        () => NewsRemoteDataSourcesImp(
+        client: sl(),
+        authLocalDataSource: sl(),
+        localDataSource: sl()
+    ),
+  );
+
+  sl.registerLazySingleton<NewsRepositories>(
+        () => NewsRepositoriesImpl(
+      newsRemoteDataSources: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetAllNewsUseCase(sl()));
+
+  sl.registerLazySingleton(() => NewsCubit(sl(), sl<LanguageCubit>()));
+  ////////task
+  sl.registerLazySingleton<TasksLocaleDataSource>(
+        () => TasksLocaleDataSourcesImpl(sl()),
+  );
+  sl.registerLazySingleton<TaskRemoteDataSource>(
+        () => TaskRemoteDataSourceImpl(
+        client: sl(),
+        authLocalDataSource: sl(),
+        localDataSource: sl(),
+            tasksLocaleDataSource: sl()
+    ),
+  );
+
+  sl.registerLazySingleton<TaskRepositories>(
+        () => TaskRepositoriesImpl(
+      taskRemoteDataSource: sl(),
+          tasksLocaleDataSource: sl()
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetAllTaskUseCase(sl()));
+  sl.registerLazySingleton(() => ToggleTaskUseCase(sl()));
+  sl.registerLazySingleton(() => EndTaskUseCase(sl()));
+  sl.registerFactory(() => TaskDetailsCubit(sl(),sl(),sl<LanguageCubit>(),sl()));
 }

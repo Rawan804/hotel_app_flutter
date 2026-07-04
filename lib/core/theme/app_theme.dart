@@ -290,10 +290,20 @@ const themeMeta = <AppThemeType, ThemeMeta>{
 class AppThemes {
   AppThemes._();
 
-  static ThemeData build(AppThemeType type) {
+  static ThemeData build(AppThemeType type,{bool isArabic = false,}) {
+    final bodyFont = isArabic
+        ? GoogleFonts.alexandria()
+        : GoogleFonts.poppins();
+
+    final titleFont = isArabic
+        ? GoogleFonts.cairo()
+        : GoogleFonts.inter();
+
+    final displayFont = isArabic
+        ? GoogleFonts.ibmPlexSansArabic()
+        : GoogleFonts.playfairDisplay();
     final p = _palettes[type]!;
     final isLight = type == AppThemeType.warmLinen;
-
     return ThemeData(
       useMaterial3: true,
       brightness: isLight ? Brightness.light : Brightness.dark,
@@ -354,51 +364,57 @@ class AppThemes {
       ),
 
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.playfairDisplay(
+        displayLarge: displayFont.copyWith(
           fontSize: 36,
           fontWeight: FontWeight.w700,
           color: p.textPrimary,
           letterSpacing: -0.5,
         ),
-        displayMedium: GoogleFonts.playfairDisplay(
+
+        displayMedium: displayFont.copyWith(
           fontSize: 26,
           fontWeight: FontWeight.w700,
           color: p.textPrimary,
         ),
-        displaySmall: GoogleFonts.playfairDisplay(
+
+        displaySmall: displayFont.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: p.textPrimary,
         ),
-        titleLarge: GoogleFonts.inter(
+
+        titleLarge: titleFont.copyWith(
           fontSize: 18,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: p.textPrimary,
           letterSpacing: 0.15,
         ),
-        titleMedium: GoogleFonts.inter(
+
+        titleMedium: titleFont.copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: p.textPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+
+        bodyLarge: bodyFont.copyWith(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: p.textPrimary,
           height: 1.6,
         ),
-        bodyMedium: GoogleFonts.alexandria(
+
+        bodyMedium: bodyFont.copyWith(
           fontSize: 14,
           color: p.textPrimary,
           height: 1.5,
         ),
-        labelLarge: GoogleFonts.inter(
+
+        labelLarge: titleFont.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: p.accent,
           letterSpacing: 0.8,
         ),
-
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
