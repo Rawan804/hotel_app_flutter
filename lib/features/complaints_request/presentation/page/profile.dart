@@ -1,17 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_app/features/Notifications/presentation/notifications_page.dart';
 import 'package:hotel_app/features/news/presentation/widgets/BottomBar/bottombar.dart';
+import 'package:hotel_app/features/services/presentation/screens/ServicesPage.dart';
 import '../../../../app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../language/presentation/cubit/language_cubit.dart';
+import '../../../language/presentation/cubit/language_state.dart';
 import '../../../leave_request/presentation/cubit/leave_request_cubit.dart';
 import '../../../leave_request/presentation/page/leave_request_page.dart';
-import '../cubit/complaints_request_cubit.dart';
+
+import '../../../news/presentation/cubit/BottomBar Cubit/bottomba_cubit.dart';
 import 'complaints_page.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
 
+  const ProfilePage({super.key});
+  void _showLanguagePicker(BuildContext context) {
+    final cubit = context.read<LanguageCubit>();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => BlocProvider.value(
+        value: cubit,
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Language / اللغة',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
+              ),
+              const SizedBox(height: 20),
+
+              // خيار العربي
+              BlocBuilder<LanguageCubit, LanguageState>(
+                builder: (ctx, state) => _LanguageOption(
+                    flag: '🇵🇸',
+                    title: 'العربية',
+                    color: Colors.black,
+                    subtitle: 'Arabic',
+                  isSelected: state.locale.languageCode == 'ar',
+                    onTap: () async {
+                      await cubit.changeLanguage('ar');
+                      Navigator.pop(context);
+
+                    }
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // خيار الإنجليزي
+              BlocBuilder<LanguageCubit, LanguageState>(
+                builder: (ctx, state) => _LanguageOption(
+                  flag: '🇺🇸',
+                  title: 'English',
+                  subtitle: 'الإنجليزية',
+                  color: Colors.black,
+                  isSelected: state.locale.languageCode == 'en',
+                    onTap: () async {
+                      await cubit.changeLanguage('en');
+                      Navigator.pop(context);
+
+                    }
+                ),
+              ),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       // backgroundColor: const Color(0xFFF5F3F0),
       bottomNavigationBar: const Bottombar(),
@@ -31,11 +103,10 @@ class ProfilePage extends StatelessWidget {
                     items: [
                       _MenuItem(
                         icon: Icons.task_alt,
-                        label: 'My Tasks',
-                      ),
-                      _MenuItem(
-                        icon: Icons.person_outline,
-                        label: 'Account',
+                        label: l.myTasks,
+                          onTap: () {
+                            context.read<BottomNavigationCubit>().changeIndex(1);
+                          }
                       ),
                     ],
                   ),
@@ -47,12 +118,16 @@ class ProfilePage extends StatelessWidget {
                     items: [
                       _MenuItem(
                         icon: Icons.notifications_none_outlined,
-                        label: 'Notifications',
+                        label: l.notifications,
+    onTap: () {
+    context.read<BottomNavigationCubit>().changeIndex(4);
+    }
+
                       ),
                       // Leaves Request
                       _MenuItem(
                         icon: Icons.request_quote_outlined,
-                        label: 'Leaves Request',
+                        label: l.leavesRequest,
                         onTap: () => showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -64,7 +139,7 @@ class ProfilePage extends StatelessWidget {
 // Complaint Request
                       _MenuItem(
                         icon: Icons.add,
-                        label: 'Complaint Request',
+                        label: l.complaintRequest,
                         onTap: () => showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -72,13 +147,18 @@ class ProfilePage extends StatelessWidget {
                           builder: (_) => ComplaintForm()
                         ),
                       ),
+                      // Complaint Request — موجود قبل، ما تغير
+
+
+
                       _MenuItem(
                         icon: Icons.language_outlined,
-                        label: 'Language',
+                        label: l.language,
+                        onTap: () => _showLanguagePicker(context), // ← هاد الإضافة الوحيدة
                       ),
                       _MenuItem(
                         icon: Icons.palette_outlined,
-                        label: 'Theme',
+                        label: l.theme,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -95,7 +175,7 @@ class ProfilePage extends StatelessWidget {
                     items: [
                       _MenuItem(
                         icon: Icons.logout_rounded,
-                        label: 'Sign Out',
+                        label: l.signOut,
                         isDestructive: true,
                         onTap: () => _confirmSignOut(context),
                       ),
@@ -162,7 +242,7 @@ class _CoverHeader extends StatelessWidget {
       children: [
         // ── Cover image ───────────────────────────────────────────
         SizedBox(
-          height: 270,
+          height: 370,
           width: 500,
           child: Image.asset(
             'images/lopi.jpg',
@@ -386,6 +466,7 @@ class _MenuCard extends StatelessWidget {
       ),
     );
   }
+
 }
 
 // ─── Data class ──────────────────────────────────────────────────────────────
@@ -402,4 +483,74 @@ class _MenuItem {
     this.isDestructive = false,
     this.onTap,
   });
+}
+class _LanguageOption extends StatelessWidget {
+  final String flag;
+  final String title;
+  final String subtitle;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Color color;
+
+  const _LanguageOption({
+    required this.flag,
+    required this.title,
+    required this.subtitle,
+    required this.isSelected,
+    required this.onTap,
+    required this.color
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: isSelected ? const Color(0xFFF5F3F0) : Colors.transparent,
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFF8C8884)
+                : Colors.transparent,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(flag, style: const TextStyle(fontSize: 28)),
+            const SizedBox(width: 14),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black.withOpacity(0.45),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            if (isSelected)
+              const Icon(
+                Icons.check_circle_rounded,
+                color: Color(0xFF8C8884),
+                size: 20,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }

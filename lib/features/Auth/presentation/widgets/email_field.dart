@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class EmailField extends StatelessWidget {
   final TextEditingController controller;
@@ -9,13 +10,14 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l=AppLocalizations.of(context);
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         fillColor: Color(0xFFF7e2d3),
-        labelText: "Email",
-        hintText: "Enter Email",
+        labelText: l!.email,
+        hintText: l.enteremail,
         labelStyle:  Theme.of(context).textTheme.labelMedium,
         hintStyle:  Theme.of(context).textTheme.bodyLarge,
         border: OutlineInputBorder(

@@ -11,7 +11,7 @@ import 'task_details_state.dart';
 class TaskDetailsCubit extends Cubit<TaskState> {
   TaskDetailsCubit(this.getAllTaskUseCase, this.toggleTaskUseCase, this.languageCubit,this.endTaskUseCase)
       : super(TaskInitial()) {
-    // اسمع على تغيير اللغة تلقائياً
+
     _languageSub = languageCubit.stream.listen((_) {
       getAllTask();
     });
@@ -75,7 +75,7 @@ class TaskDetailsCubit extends Cubit<TaskState> {
     result.fold(
           (failure) => emit(TaskFail(message: "Failed")),
           (_) async {
-        // ✅ بعد النجاح اجلب التاسكات من جديد
+
         final freshResult = await getAllTaskUseCase();
         freshResult.fold(
               (failure) {},
@@ -95,7 +95,6 @@ class TaskDetailsCubit extends Cubit<TaskState> {
     if (stateNow is TaskSuccses) {
       emit(stateNow.copyWith(filter: filter));
     } else if (stateNow is TaskToggle) {
-      // ارجع لـ TaskSuccses مع الـ filter الجديد
       emit(TaskSuccses(tasks: cachedTasks, filter: filter));
     }
   }

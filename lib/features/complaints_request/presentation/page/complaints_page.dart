@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_app/core/constants/app_colors.dart';
 import 'package:hotel_app/features/complaints_request/presentation/cubit/complaints_request_cubit.dart';
+import 'package:hotel_app/l10n/app_localizations.dart';
 import '../../../Auth/presentation/widgets/auth_button.dart';
 import '../cubit/complaints_request_state.dart';
 class ComplaintForm extends   StatelessWidget{
@@ -10,6 +11,7 @@ class ComplaintForm extends   StatelessWidget{
   Widget build(BuildContext context) {
     final cubit=context.read<ComplaintsRequestCubit>();
     final theme=Theme.of(context);
+    final l= AppLocalizations.of(context);
     return Container(
       padding:  EdgeInsets.only(top: 50,right: 20,left: 20,bottom: 100),
       decoration:  BoxDecoration(
@@ -49,7 +51,7 @@ class ComplaintForm extends   StatelessWidget{
                  Align(
                    alignment: Alignment.topCenter,
                    child: Text(
-                    "Send Complaint",
+                 l!.sendComplaint,
                     style:Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20)
                                  ),
                  ),
@@ -61,7 +63,7 @@ class ComplaintForm extends   StatelessWidget{
                   controller: cubit.titleController,
                   decoration: InputDecoration(
                     fillColor: theme.hoverColor,
-                    labelText: " Complaint title",
+                    labelText: l.complainttitle,
                     prefixIcon: const Icon(Icons.title_outlined),
 
                     border: OutlineInputBorder(
@@ -79,7 +81,7 @@ class ComplaintForm extends   StatelessWidget{
                   maxLines: 4,
                   decoration: InputDecoration(
                     fillColor: theme.hoverColor,
-                    labelText: " complaint description",
+                    labelText: l.complaintdescription,
                     prefixIcon: const Icon(Icons.description),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -94,7 +96,7 @@ class ComplaintForm extends   StatelessWidget{
                   children: [
 
                     SizedBox(
-                   width: 100,
+                   width: 120,
                       height: 50,
                       child: state is ComplaintsRequestLoading
                           ? const Center(child: CircularProgressIndicator())
@@ -114,7 +116,7 @@ class ComplaintForm extends   StatelessWidget{
                           Navigator.pop(context);
                         },
                         child:  Text(
-                          "cancel ",
+                        l.cancel,
                           style: TextStyle(color:AppColors.primaryDark),
                         ),
                       ),
@@ -123,7 +125,7 @@ class ComplaintForm extends   StatelessWidget{
                         child: SizedBox(
                             height: 50,
                             child: CustomButton(
-                              text: "Send",
+                              text:l.send,
                               textStyle: Theme.of(context)
                                   .textTheme
                                   .displayMedium

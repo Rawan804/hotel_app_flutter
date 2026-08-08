@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_app/features/tasks/domain/entites/task.dart';
 
+import '../../../../core/api/api.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class HeaderCard extends StatelessWidget {
@@ -9,20 +9,22 @@ class HeaderCard extends StatelessWidget {
   final int totalItems;
   final int completedItems;
 
-  const HeaderCard(
-      {
+  const HeaderCard({
     super.key,
-        this.totalItems = 0,
-        this.completedItems = 0,
+    this.totalItems = 0,
+    this.completedItems = 0,
     required this.name,
     required this.imageUrl,
-
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context)!;
+
+    // ✅ نبني الرابط الكامل مرة وحدة هون، ونستخدمه بكل مكان بالودجت
+    final fullImageUrl = ApiConstants.imageUrl(imageUrl);
+
     return Container(
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
@@ -45,7 +47,7 @@ class HeaderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                  l.goodluckwithyourtasks ,
+                    l.goodluckwithyourtasks,
                     style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12),
                   ),
                   const SizedBox(height: 5),
@@ -57,18 +59,16 @@ class HeaderCard extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(imageUrl),
-                  ),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
+                  GestureDetector(
+                    onTap: () => _showProfileImage(context, fullImageUrl),
+                    child: Hero(
+                      tag: 'profile_image',
+                      child: CircleAvatar(
+                        radius: 28,
+                        backgroundImage: NetworkImage(fullImageUrl),
+                        onBackgroundImageError: (_, __) {
+                          // ما يكسر الواجهة لو الصورة فشلت بالتحميل
+                        },
                       ),
                     ),
                   ),
@@ -97,12 +97,55 @@ class HeaderCard extends StatelessWidget {
                 _StatItem(title: l.pending, value: totalItems - completedItems),
                 _Divider(),
                 _StatItem(title: l.done, value: completedItems),
-
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  /// ملاحظة: صار اسمها _showProfileImage (private) لأنها مو مفروض تنستدعى
+  /// من برا هالملف، وصار الرابط يوصلها جاهز (fullImageUrl) بدل ما تبنيه هي بنفسها.
+  void _showProfileImage(BuildContext context, String fullImageUrl) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: '',
+      barrierColor: Colors.black87,
+      transitionDuration: const Duration(milliseconds: 250),
+      pageBuilder: (context, anim1, anim2) => GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Center(
+          child: Hero(
+            tag: 'profile_image',
+            child: InteractiveViewer(
+              minScale: 1.0,
+              maxScale: 2.0,
+              child: SizedBox(
+                width: 230,
+                height: 250,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(300),
+                  child: Image.network(
+                    fullImageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      width: 230,
+                      height: 230,
+                      color: Colors.grey.shade800,
+                      child: const Icon(Icons.person, color: Colors.white54, size: 80),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+        ),
+      ),
+      transitionBuilder: (context, anim, secondaryAnim, child) =>
+          FadeTransition(opacity: anim, child: child),
     );
   }
 }

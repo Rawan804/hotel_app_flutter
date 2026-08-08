@@ -18,9 +18,13 @@ Color getStatusColor(String status) {
       return Colors.green;
     case 'In Progress':
       return Colors.orange;
+    case 'in_progress':
+      return Colors.orange;
     case 'جارٍ التنفيذ':
       return Colors.orange;
     case 'Pending':
+      return Colors.red;
+    case 'pending':
       return Colors.red;
     case 'قيد الانتظار':
       return Colors.red;

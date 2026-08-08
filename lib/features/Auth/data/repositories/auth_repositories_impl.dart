@@ -22,8 +22,17 @@ try{
 
 
   await authLocalDataSource.saveToken(
+
     userModel.token,
   );
+  await authLocalDataSource.saveImage(
+    userModel.staff.image,
+  );
+  await authLocalDataSource.savename(
+    userModel.staff.name,
+  );
+  print(userModel.staff.name);
+  print(userModel.staff.image);
   return Right(userModel);
 }on ServerException {
   return left(ServerFailure());
@@ -64,6 +73,14 @@ try{
       await authLocalDataSource.saveToken(
         userModel.token,
       );
+      await authLocalDataSource.saveImage(
+        userModel.staff.image,
+      );
+      await authLocalDataSource.savename(
+        userModel.staff.name,
+      );
+      print(userModel.staff.name);
+      print(userModel.staff.image);
       return Right(userModel);
     }on ServerException {
       return left(ServerFailure());

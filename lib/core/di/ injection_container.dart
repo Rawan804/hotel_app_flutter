@@ -10,6 +10,14 @@ import 'package:hotel_app/features/leave_request/data/repositories/leave_request
 import 'package:hotel_app/features/leave_request/domain/repositories/leave_request_repositories.dart';
 import 'package:hotel_app/features/leave_request/domain/use_cases/add_leave_request_use_case.dart';
 import 'package:hotel_app/features/leave_request/presentation/cubit/leave_request_cubit.dart';
+import 'package:hotel_app/features/services/data/data_sources/services_locale_data_sources.dart';
+import 'package:hotel_app/features/services/data/data_sources/services_remote_data_sources.dart';
+import 'package:hotel_app/features/services/data/repositories/services_repositories_impl.dart';
+import 'package:hotel_app/features/services/domain/repositories/services_repositories.dart';
+import 'package:hotel_app/features/services/domain/use_cases/end_services.dart';
+import 'package:hotel_app/features/services/domain/use_cases/getServices.dart';
+import 'package:hotel_app/features/services/domain/use_cases/start_services.dart';
+import 'package:hotel_app/features/services/presentation/cubit/services_cubit.dart';
 import 'package:hotel_app/features/tasks/data/data_sources/task_remote_data_sources.dart';
 import 'package:hotel_app/features/tasks/data/repositories/task_repositories_impl.dart';
 import 'package:hotel_app/features/tasks/domain/repositories/task_repositories.dart';
@@ -201,5 +209,43 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAllTaskUseCase(sl()));
   sl.registerLazySingleton(() => ToggleTaskUseCase(sl()));
   sl.registerLazySingleton(() => EndTaskUseCase(sl()));
-  sl.registerFactory(() => TaskDetailsCubit(sl(),sl(),sl<LanguageCubit>(),sl()));
+  sl.registerLazySingleton(
+        () => TaskDetailsCubit(
+      sl(),
+      sl(),
+      sl<LanguageCubit>(),
+      sl(),
+    ),
+  );
+
+
+
+
+
+
+
+
+  sl.registerLazySingleton<ServicesLocaleDataSources>(
+        () => ServiceLocaleDataSourcesImpl(sl()),
+  );
+  sl.registerLazySingleton<ServicesRemoteDataSources>(
+        () => ServicesRemoteDataSourcesImpl(
+        client: sl(),
+        authLocalDataSource: sl(),
+        localDataSource: sl(),
+        servicesLocaleDataSources: sl()
+    ),
+  );
+
+  sl.registerLazySingleton<ServicesRepositories>(
+        () => ServicesRepositoriesImpl(
+        servicesRemoteDataSources: sl(),
+        servicesLocaleDataSources: sl()
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetAllServicesUseCase(sl()));
+  sl.registerLazySingleton(() => StartServiceUseCase(sl()));
+  sl.registerLazySingleton(() => EndServiceUseCase(sl()));
+  sl.registerFactory(() => ServicesCubit(sl(),sl(),sl<LanguageCubit>(),sl()));
 }

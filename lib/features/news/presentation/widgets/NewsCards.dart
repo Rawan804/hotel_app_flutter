@@ -55,6 +55,18 @@ class _NewscardsState extends State<Newscards> {
 
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
+        print(state.runtimeType);
+        if (state is NewsLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is NewsFail) {
+          return Center(
+            child: Text(state.message),
+          );
+        }
         if (state is NewsSuccess) {
           _hint();
 

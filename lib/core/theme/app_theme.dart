@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hotel_app/l10n/app_localizations.dart';
 
 // ─────────────────────────────────────────────
 //  Theme identifiers
@@ -14,8 +15,7 @@ enum AppThemeType {
   babyPink,
   blackGold,
   midnightPurple,
-  sapphireGold,
-  champagneBeige
+
 }
 
 // ─────────────────────────────────────────────
@@ -113,11 +113,11 @@ const _palettes = <AppThemeType, _Palette>{
   // ── Baby Blue ──────────────────────────────
   AppThemeType.babyBlue: _Palette(
     background:    Color(0xFFF5FAFF), // أزرق ثلجي فاتح
-    surface:       Color(0xFFEAF4FF),
+    surface:       Color(0xFF6FAEE8),
     appBar:        Color(0xFFB8DFFF),
     primary:       Color(0xFF9CCEF5),
     accent:        Color(0xFF6FAEE8), // أزرق بيبي
-    textPrimary:   Color(0xFF274C77),
+    textPrimary:   Color(0xFF081910),
     textSecondary: Color(0xFF5D7FA3),
     navSelected:   Color(0xFF6FAEE8),
     navUnselected: Color(0xFFA8C7E6),
@@ -126,7 +126,7 @@ const _palettes = <AppThemeType, _Palette>{
 // ── Baby Pink ──────────────────────────────
   AppThemeType.babyPink: _Palette(
     background:    Color(0xFFFFF7FA), // وردي ثلجي
-    surface:       Color(0xFFFFEDF4),
+    surface:       Color(0xFFD9AFC0),
     appBar:        Color(0xFFFCC8DA),
     primary:       Color(0xFFF7AFC8),
     accent:        Color(0xFFE88AB0), // وردي بيبي
@@ -157,132 +157,104 @@ const _palettes = <AppThemeType, _Palette>{
     primary: Color(0xFF7D6996),
     accent: Color(0xFFD4A5FF),
 
-    textPrimary: Color(0xFFF4EFFF),
+    textPrimary: Color(0xFF0F071A),
     textSecondary: Color(0xFFC8B4E3),
 
     navSelected: Color(0xFFD4A5FF),
     navUnselected: Color(0xFF7D6996),
   ),
-  AppThemeType.sapphireGold: _Palette(
-    background: Color(0xFF071421),
-    surface: Color(0xFF102132),
-    appBar: Color(0xFF06111C),
 
-    primary: Color(0xFF18344D),
-    accent: Color(0xFFFFD369),
 
-    textPrimary: Color(0xFFF2F8FF),
-    textSecondary: Color(0xFFAFC7E2),
-
-    navSelected: Color(0xFFFFD369),
-    navUnselected: Color(0xFF58779C),
-  ),
-  AppThemeType.champagneBeige: _Palette(
-    background: Color(0xFFFDF8F2),
-    surface: Color(0xFFFFFFFF),
-    appBar: Color(0xFFEADBC8),
-
-    primary: Color(0xFFF3E6D3),
-    accent: Color(0xFFC9A86A),
-
-    textPrimary: Color(0xFF3E2E1E),
-    textSecondary: Color(0xFF8A755C),
-
-    navSelected: Color(0xFFC9A86A),
-    navUnselected: Color(0xFFC7B39A),
-  ),
 };
 
-
-// ─────────────────────────────────────────────
-//  Theme metadata (اسم + أيقونة للعرض)
-// ─────────────────────────────────────────────
 class ThemeMeta {
-  final String label;
+  final String labelKey;
   final String emoji;
   final Color previewColor;
   final Color previewAccent;
 
   const ThemeMeta({
-    required this.label,
+    required this.labelKey,
     required this.emoji,
     required this.previewColor,
     required this.previewAccent,
   });
+
+
+  String label(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    switch (labelKey) {
+      case 'royalblue':      return t.royalblue;
+      case 'dustyrose':      return t.dustyrose;
+      case 'darkespresso':   return t.darkespresso;
+      case 'warmlinen':      return t.warmlinen;
+      case 'forestemerald':  return t.forestemerald;
+      case 'babyblue':       return t.babyblue;
+      case 'babypink':       return t.babypink;
+      case 'blackgold':      return t.blackgold;
+      case 'midnightpurple': return t.midnightpurple;
+      default: return labelKey;
+    }
+  }
 }
 
 const themeMeta = <AppThemeType, ThemeMeta>{
   AppThemeType.royalBlue: ThemeMeta(
-    label: 'Royal Blue',
+    labelKey: 'royalblue',
     emoji: '👑',
     previewColor: Color(0xFF1E3A5F),
     previewAccent: Color(0xFFCBA135),
   ),
   AppThemeType.dustyRose: ThemeMeta(
-    label: 'Dusty Rose',
+    labelKey: 'dustyrose',
     emoji: '🌸',
     previewColor: Color(0xFF8B4A5E),
     previewAccent: Color(0xFFE8B4C0),
   ),
   AppThemeType.darkEspresso: ThemeMeta(
-    label: 'Dark Espresso',
+    labelKey: 'darkespresso',
     emoji: '☕',
     previewColor: Color(0xFF4E2D1E),
     previewAccent: Color(0xFFC49A6C),
   ),
   AppThemeType.warmLinen: ThemeMeta(
-    label: 'Warm Linen',
+    labelKey: 'warmlinen',
     emoji: '🌾',
     previewColor: Color(0xFF7A5C3E),
     previewAccent: Color(0xFFBF8C3A),
   ),
   AppThemeType.forestEmerald: ThemeMeta(
-    label: 'Forest Emerald',
+    labelKey: 'forestemerald',
     emoji: '🌿',
     previewColor: Color(0xFF1B4332),
     previewAccent: Color(0xFFB87333),
   ),
   AppThemeType.babyBlue: ThemeMeta(
-    label: 'Baby Blue',
+    labelKey: 'babyblue',
     emoji: '🩵',
     previewColor: Color(0xFF9CCEF5),
     previewAccent: Color(0xFF6FAEE8),
   ),
 
   AppThemeType.babyPink: ThemeMeta(
-    label: 'Baby Pink',
+    labelKey: 'babypink',
     emoji: '🩷',
     previewColor: Color(0xFFF7AFC8),
     previewAccent: Color(0xFFE88AB0),
   ),
   AppThemeType.blackGold: ThemeMeta(
-    label: 'Black Gold',
+    labelKey: 'blackgold',
     emoji: '🖤',
     previewColor: Color(0xFF171717),
     previewAccent: Color(0xFFD4AF37),
   ),
 
   AppThemeType.midnightPurple: ThemeMeta(
-    label: 'Midnight Purple',
+    labelKey: 'midnightpurple',
     emoji: '💜',
     previewColor: Color(0xFF35214F),
     previewAccent: Color(0xFFD4A5FF),
-  ),
-
-  AppThemeType.sapphireGold: ThemeMeta(
-    label: 'Sapphire Gold',
-    emoji: '💎',
-    previewColor: Color(0xFF18344D),
-    previewAccent: Color(0xFFFFD369),
-  ),
-
-  AppThemeType.champagneBeige: ThemeMeta(
-    label: 'Champagne Beige',
-    emoji: '🥂',
-    previewColor: Color(0xFFF3E6D3),
-    previewAccent: Color(0xFFC9A86A),
-  ),
-};
+  ),};
 
 // ─────────────────────────────────────────────
 //  Theme builder
@@ -300,7 +272,7 @@ class AppThemes {
         : GoogleFonts.inter();
 
     final displayFont = isArabic
-        ? GoogleFonts.ibmPlexSansArabic()
+        ? GoogleFonts.almarai()
         : GoogleFonts.playfairDisplay();
     final p = _palettes[type]!;
     final isLight = type == AppThemeType.warmLinen;

@@ -42,12 +42,12 @@ class NewsCardBack extends StatelessWidget {
                       news.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleMedium?.copyWith( fontSize: 12, fontWeight: FontWeight.w700, ),
+                      style: theme.textTheme.displayMedium?.copyWith( fontSize: 12, fontWeight: FontWeight.w700, ),
                     ),
                     const SizedBox(height: 5),
                     Text(
                       formatDate(news.published_at),
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: theme.textTheme.displayMedium?.copyWith(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                       ),
@@ -69,7 +69,8 @@ class NewsCardBack extends StatelessWidget {
             child: SingleChildScrollView(
               child: Text(
                 news.content,
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
                   fontSize: 12,
                   height: 1.0,
                 ),

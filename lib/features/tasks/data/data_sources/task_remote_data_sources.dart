@@ -27,14 +27,18 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource{
   TaskRemoteDataSourceImpl({required this.client,required this.authLocalDataSource,required this.localDataSource,required this.tasksLocaleDataSource});
   @override
   Future<List<TaskModel>> getTask() async{
+    print('$BASE_URL/tasks/my');
     final token =await authLocalDataSource.getToken();
     final locale = await localDataSource.getLanguage();
     final response=await client.get(Uri.parse('$BASE_URL/tasks/my'),
+
           headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
             'Accept-language':locale
           });
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       final Map<String, dynamic> decodedJson =
       json.decode(response.body);

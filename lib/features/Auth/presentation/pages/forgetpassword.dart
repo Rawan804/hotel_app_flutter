@@ -7,6 +7,7 @@ import 'package:hotel_app/features/Auth/presentation/widgets/email_field.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class Forgetpassword extends StatelessWidget {
   Forgetpassword({super.key});
@@ -16,6 +17,7 @@ class Forgetpassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l=AppLocalizations.of(context);
     return BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
       listener: (context, state) {
         if (state is ForgetPasswordSuccess) {
@@ -32,8 +34,8 @@ class Forgetpassword extends StatelessWidget {
 
         if (state is ForgetPasswordFail) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Failed to send OTP"),
+             SnackBar(
+              content: Text(l!.failedtosendOTP),
             ),
           );
         }
@@ -80,17 +82,14 @@ class Forgetpassword extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "Please enter your email",
+                        l!.pleaseenteryouremail,
                             style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
+                                .textTheme.displayMedium?.copyWith(fontSize: 15)
                           ),
                           const SizedBox(height: 7),
                           Text(
-                            "to send OTP",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
+                          l.tosendOTP,
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 15)
                           ),
 
                           const SizedBox(height: 30),
@@ -103,7 +102,7 @@ class Forgetpassword extends StatelessWidget {
 
                          CustomButton(
                            textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
-                            text: 'Send OTP',
+                            text: l.sendOTP,
                             onPressed: () {
                               final email =
                               emailcontroller.text.trim();

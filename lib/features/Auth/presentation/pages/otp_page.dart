@@ -7,6 +7,7 @@ import 'package:hotel_app/features/Auth/presentation/pages/create_new_password.d
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/otp_field.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class OtpPage extends StatelessWidget {
   final String email;
@@ -14,6 +15,7 @@ class OtpPage extends StatelessWidget {
   final TextEditingController otpController=TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final l=AppLocalizations.of(context);
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
         if (state is OtpVerified) {
@@ -22,7 +24,7 @@ class OtpPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => CreateNewPassword(
                 email: email,
-                otp: otpController.text,
+                otp: context.read<OtpCubit>().currentOtp,
               ),
             ),
           );
@@ -35,7 +37,7 @@ class OtpPage extends StatelessWidget {
         }
         if (state is OtpResent) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("OTP sent again")),
+             SnackBar(content: Text(l!.oTPsentagain)),
           );
         }
       },
@@ -54,7 +56,7 @@ class OtpPage extends StatelessWidget {
                 const SizedBox(height: 40),
 
                 Text(
-                  "Enter OTP",
+                  l!.enterOTP,
                   style:
                   Theme.of(context).textTheme.displayMedium,
                 ),
@@ -65,7 +67,7 @@ class OtpPage extends StatelessWidget {
                   padding:
                   const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "We have sent an OTP to your email for verification",
+                    l.wehave,
                     textAlign: TextAlign.center,
                     style:
                     Theme.of(context).textTheme.bodyMedium,
@@ -109,8 +111,8 @@ class OtpPage extends StatelessWidget {
                       width: 300,
                       child: CustomButton(
                         text: state is OtpLoading
-                            ? "Loading..."
-                            : "Verify",
+                            ? l.loading
+                            : l.confirm,
                         onPressed: state is OtpLoading
                             ? null
                             : () {
@@ -146,7 +148,7 @@ class OtpPage extends StatelessWidget {
                       mainAxisAlignment:
                       MainAxisAlignment.center,
                       children: [
-                        const Text("Didn't receive OTP?"),
+                         Text(l.didntreceiveOTP),
 
                         const SizedBox(width: 5),
 
@@ -159,7 +161,7 @@ class OtpPage extends StatelessWidget {
                               : null,
                           child: Text(
                             canResend
-                                ? "Resend it"
+                                ? l.resendit
                                 : "wait  $timerText",
                             style: TextStyle(
                               color: canResend

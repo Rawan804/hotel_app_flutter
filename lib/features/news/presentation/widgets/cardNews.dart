@@ -57,6 +57,7 @@ final l =AppLocalizations.of(context);
               child:  Text(
                 l!.news,
                 style: TextStyle(
+
                   color:theme.colorScheme.surface ,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,

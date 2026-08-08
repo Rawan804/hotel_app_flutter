@@ -6,11 +6,13 @@ import 'package:hotel_app/core/error/failures.dart';
 import 'package:hotel_app/features/Auth/data/datasource/auth_local_datasource.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../core/api/api.dart';
+
 abstract class ComplaintsRemoteDataSources{
   Future<Unit>addComplaint(String title,String description);
   
 }
-const BASE_URL= "http://192.168.1.7:8000/api";
+const BASE_URL= ApiConstants.baseUrl;
 class ComplaintsRemoteDataSourcesImpl implements ComplaintsRemoteDataSources{
   final AuthLocalDataSource authLocalDataSource;
      final http.Client client;

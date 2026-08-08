@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_app/core/constants/app_colors.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
+
 class PasswordField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String)? onChanged;
@@ -20,6 +23,7 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final l=AppLocalizations.of(context);
     return TextFormField(
       controller: widget.controller,
       onChanged: widget.onChanged,
@@ -27,8 +31,8 @@ class _PasswordFieldState extends State<PasswordField> {
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         fillColor: Color(0xFFF7e2d3),
-        labelText: "Password",
-        hintText: "Enter Password",
+        labelText: l!.password,
+        hintText: l.enterPassword,
         labelStyle: Theme.of(context).textTheme.labelMedium,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
 

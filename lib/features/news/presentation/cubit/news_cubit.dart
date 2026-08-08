@@ -38,6 +38,7 @@ class NewsCubit extends Cubit<NewsState> {
         emit(NewsFail(message: 'Failed'));
       },
           (newsList) {
+            print("EMIT NEWS SUCCESS");
         emit(NewsSuccess(news: newsList));
       },
     );

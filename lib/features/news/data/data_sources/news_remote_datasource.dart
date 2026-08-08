@@ -36,7 +36,8 @@ NewsRemoteDataSourcesImp({required this.client,required this.authLocalDataSource
         'Accept-language':locale
       },
     );
-
+    print("NEWS STATUS = ${response.statusCode}");
+    print("NEWS BODY = ${response.body}");
     if (response.statusCode == 200) {
       final List decodedJson = json.decode(response.body) as List;
 

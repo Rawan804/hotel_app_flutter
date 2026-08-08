@@ -7,11 +7,12 @@ class Staff extends Equatable{
   final String phone;
   final String role;
   final int dep_id;
+  final String image;
 
-  Staff({required this.staff_id,required this.name,required this.email,required this.phone,required this.role,required this.dep_id});
+  Staff({required this.staff_id,required this.name,required this.email,required this.phone,required this.role,required this.dep_id,required this.image});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [staff_id,name,email,phone,role,dep_id];
+  List<Object?> get props => [staff_id,name,email,phone,role,dep_id,image];
 
 }

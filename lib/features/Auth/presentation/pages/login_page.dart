@@ -7,6 +7,7 @@ import 'package:hotel_app/features/Auth/presentation/widgets/password_field.dart
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../news/presentation/cubit/news_cubit.dart';
 import '../../../news/presentation/screen/HomePage.dart';
 
@@ -18,6 +19,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l=AppLocalizations.of(context);
     final theme=Theme.of(context);
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) async {
@@ -80,8 +82,9 @@ class LoginPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            "Welcome",
-                            style: Theme.of(context).textTheme.displayMedium,
+                            l!.welcome,
+                            style:  Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
+
                           ),
 
                           const SizedBox(height: 20),
@@ -103,8 +106,8 @@ class LoginPage extends StatelessWidget {
                                   ),
                                 );
                               },
-                              child: const Text(
-                                "Forget password?",style: TextStyle(color: Colors.black),
+                              child:  Text(
+                                l.forgetpassword,style:      Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14),
                               ),
                             ),
                           ),
@@ -112,11 +115,11 @@ class LoginPage extends StatelessWidget {
                           const SizedBox(height: 20),
 
                           state is LoginLoading
-                              ? const CircularProgressIndicator()
+                              ?  CircularProgressIndicator()
                               : CustomButton(
-                            text: 'Login',
+                            text:l.login,
                             textStyle:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20,color: Colors.black),
+                            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
 
                             onPressed: () {
                               context.read<LoginCubit>().login(

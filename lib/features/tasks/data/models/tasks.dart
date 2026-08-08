@@ -14,11 +14,10 @@ class TaskModel extends TaskEntity {
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     final items = (json['items'] as List<dynamic>).map((e) => TaskItemModel.fromJson(e)).toList();
-
     return TaskModel(
       id: json['id'] as int,
       title: json['fixed_task']['name'] as String,
-      status: json['status'], // من الـ backend مباشرة
+      status: json['status'],
       items: items,
       completedItems: items.where((i) => i.isDone).length,
       totalItems: items.length,

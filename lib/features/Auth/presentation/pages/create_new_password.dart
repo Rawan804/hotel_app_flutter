@@ -5,6 +5,7 @@ import 'package:hotel_app/features/Auth/presentation/cubit/create_new_password_c
 import 'package:hotel_app/features/Auth/presentation/cubit/create_new_password_state.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/password_field.dart';
+import 'package:hotel_app/l10n/app_localizations.dart';
 
 import '../../../news/presentation/screen/HomePage.dart';
 import '../widgets/ruleitem.dart';
@@ -23,6 +24,7 @@ class CreateNewPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<PasswordCubit, PasswordState>(
@@ -36,8 +38,8 @@ class CreateNewPassword extends StatelessWidget {
                   (route) => false,
             );
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Password reset successful"),
+               SnackBar(
+                content: Text(l!.passwordresetsuccessful),
               ),
             );
           }
@@ -82,8 +84,8 @@ class CreateNewPassword extends StatelessWidget {
 
                   Center(
                     child: Text(
-                      "Create New Password",
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 30),
+                     l!.createNewPassword,
+                      style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20,fontWeight: FontWeight.w600),
                     ),
                   ),
 
@@ -112,10 +114,10 @@ class CreateNewPassword extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: 0), Column( crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(height: 10), Column( crossAxisAlignment: CrossAxisAlignment.start, children: [
                     const SizedBox(height: 10),
-                    Text( "Password Strength", style: Theme.of(context).textTheme.titleMedium, ),
-                    const SizedBox(height: 0),
+                    Text( l.passwordStrength, style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14), ),
+                    const SizedBox(height: 12),
                     TweenAnimationBuilder<double>( tween: Tween( begin: 0, end: state.strength, ),
                       duration: const Duration(milliseconds: 500),
                        builder: (context, value, child) {
@@ -164,8 +166,8 @@ class CreateNewPassword extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         state.isMatch
-                            ? "Passwords match"
-                            : "Passwords don't match",
+                            ? l.passwordsmatch
+                            : l.passwordsdontmatch,
                       ),
                     ],
                   ),
@@ -173,33 +175,31 @@ class CreateNewPassword extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   Text(
-                    "Password must contain:",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    l.passwordmustcontain,
+                    style:     Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
                     ),
-                  ),
+
 
                   const SizedBox(height: 10),
 
                   RuleItem(
-                      text: "At least one uppercase letter",
+                      text:l.atleastoneuppercaseletter,
                       value: state.hasUpper),
                   SizedBox(height: 7,),
                   RuleItem(
-                      text: "At least one lowercase letter",
+                      text: l.atleastonelowercaseletter,
                       value: state.hasLower),
                   SizedBox(height: 7,),
                   RuleItem(
-                      text: "At least one number",
+                      text: l.atleastonenumber,
                       value: state.hasNumber),
                   SizedBox(height: 7,),
                   RuleItem(
-                      text: "At least one special character",
+                      text: l.atleastonespecialcharacter,
                       value: state.hasSpecial),
                   SizedBox(height: 7,),
                   RuleItem(
-                      text: "Minimum 8 characters",
+                      text: l.minimum,
                       value: state.hasLength),
 
                   const SizedBox(height: 30),
@@ -207,12 +207,12 @@ class CreateNewPassword extends StatelessWidget {
                   /// BUTTON
                   CustomButton(
                     text: state is NewPasswordLoading
-                        ? "Loading..."
-                        : "Confirm",
+                        ?l.loading
+                        : l.confirm,
                     onPressed: state.isMatch
                         ? () {
                       context
-                          .read<PasswordCubit>().resetpassword(email, otp, passwordController.text,
+                          .read<PasswordCubit>().resetpassword(email, otp,passwordController.text,
 
                       );
                     }
