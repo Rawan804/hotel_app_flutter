@@ -13,12 +13,12 @@ class NewsCubit extends Cubit<NewsState> {
 
   NewsCubit(this.getAllNewsUseCase,this.languageCubit) : super(NewsInitial()){
 
-      _languageSub = languageCubit.stream.listen((_) {
-   getAllNews();
-  }
+    _languageSub = languageCubit.stream.listen((_) {
+      getAllNews();
+    }
 
-  );
-}
+    );
+  }
   final LanguageCubit languageCubit;
   late final StreamSubscription _languageSub;
 
@@ -35,10 +35,9 @@ class NewsCubit extends Cubit<NewsState> {
 
     result.fold(
           (failure) {
-        emit(NewsFail(message: 'Failed'));
+        emit(NewsFail(message: failure.message));
       },
           (newsList) {
-            print("EMIT NEWS SUCCESS");
         emit(NewsSuccess(news: newsList));
       },
     );

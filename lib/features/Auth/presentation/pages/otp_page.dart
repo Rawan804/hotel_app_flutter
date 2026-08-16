@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_app/features/Auth/presentation/cubit/otp_cubit.dart';
 import 'package:hotel_app/features/Auth/presentation/cubit/otp_state.dart';
 import 'package:hotel_app/features/Auth/presentation/cubit/resend_otp_cubit.dart';
+import 'package:hotel_app/features/Auth/presentation/cubit/resend_otp_state.dart';
 import 'package:hotel_app/features/Auth/presentation/pages/create_new_password.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/otp_field.dart';
@@ -16,31 +17,44 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l=AppLocalizations.of(context);
-    return BlocListener<OtpCubit, OtpState>(
-      listener: (context, state) {
-        if (state is OtpVerified) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CreateNewPassword(
-                email: email,
-                otp: context.read<OtpCubit>().currentOtp,
-              ),
-            ),
-          );
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<OtpCubit, OtpState>(
+          listener: (context, state) {
+            if (state is OtpVerified) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CreateNewPassword(
+                    email: email,
+                    otp: context.read<OtpCubit>().currentOtp,
+                  ),
+                ),
+              );
+            }
 
-        if (state is OtpError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        }
-        if (state is OtpResent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text(l!.oTPsentagain)),
-          );
-        }
-      },
+            if (state is OtpError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+            if (state is OtpResent) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l!.oTPsentagain)),
+              );
+            }
+          },
+        ),
+        BlocListener<ResendOtpCubit, ResendOtpState>(
+          listener: (context, state) {
+            if (state is ResendOTPFail) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -148,7 +162,7 @@ class OtpPage extends StatelessWidget {
                       mainAxisAlignment:
                       MainAxisAlignment.center,
                       children: [
-                         Text(l.didntreceiveOTP),
+                        Text(l.didntreceiveOTP),
 
                         const SizedBox(width: 5),
 

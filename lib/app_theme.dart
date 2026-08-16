@@ -5,10 +5,6 @@ import 'package:hotel_app/l10n/app_localizations.dart';
 import '../Theme/theme_cubit.dart';
 import 'core/theme/app_theme.dart';
 
-/// Page that lets the user pick the app's color theme.
-///
-/// Shows a header (title + subtitle) followed by a scrollable list
-/// of theme cards. The user's currently active theme is highlighted.
 class ThemePage extends StatelessWidget {
   const ThemePage({super.key});
 
@@ -80,10 +76,6 @@ class _ThemePageAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────
-//  Header (title + subtitle)
-// ─────────────────────────────────────────────
 class _ThemePageHeader extends StatelessWidget {
   final String title;
   final String subtitle;

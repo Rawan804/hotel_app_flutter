@@ -11,21 +11,16 @@ import '../../../Auth/presentation/pages/login_page.dart';
 import '../../data/datasource/onboarding_local_data.dart';
 import 'onboarding_screen.dart';
 
-class SplashScreen
-    extends StatefulWidget {
-
+class SplashScreen extends StatefulWidget {
   const SplashScreen({
     super.key,
   });
-
   @override
   State<SplashScreen> createState() =>
       _SplashScreenState();
 }
 
-class _SplashScreenState
-    extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
 
   late AnimationController
   _controller;

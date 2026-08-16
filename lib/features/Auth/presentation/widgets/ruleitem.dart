@@ -22,7 +22,7 @@ class RuleItem extends StatelessWidget {
           size: 18,
         ),
         const SizedBox(width: 8),
-        Text(text,style:  Theme.of(context).textTheme.labelMedium),
+        Text(text,style:  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.black)),
       ],
     );
   }

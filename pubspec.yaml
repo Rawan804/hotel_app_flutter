@@ -29,6 +29,8 @@ dependencies:
   firebase_messaging: ^16.4.1
   firebase_core: ^4.11.0
   flutter_local_notifications: ^20.1.0
+  pinput: ^6.0.2
+  sms_autofill: ^2.5.0
 
 
 dev_dependencies:

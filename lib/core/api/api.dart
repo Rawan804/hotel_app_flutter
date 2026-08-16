@@ -8,12 +8,9 @@ class ApiConstants {
     if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
       return relativePath;
     }
-
     final cleanPath = relativePath.startsWith('/')
         ? relativePath.substring(1)
         : relativePath;
-
-    // ملاحظة: هون بنستخدم host مباشرة (بدون /api)، لأن الصور تحت /storage
     return '$host/$cleanPath';
   }
 }

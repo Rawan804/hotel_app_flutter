@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hotel_app/core/constants/app_colors.dart';
+
 import 'package:hotel_app/features/news/presentation/widgets/BottomBar/bottombar.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

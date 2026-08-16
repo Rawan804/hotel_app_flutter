@@ -42,8 +42,6 @@ class CustomTextField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-
-        // مهم: شكل عند التركيز
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: const BorderSide(
@@ -51,7 +49,6 @@ class CustomTextField extends StatelessWidget {
             width: 2,
           ),
         ),
-
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: const BorderSide(

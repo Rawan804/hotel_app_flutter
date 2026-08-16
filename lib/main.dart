@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hotel_app/features/Auth/presentation/cubit/logout_cubit.dart';
 import 'package:hotel_app/features/services/presentation/cubit/services_cubit.dart';
 import 'package:hotel_app/features/tasks/presentation/cubit/task_details_cubit.dart';
 import 'Theme/theme_cubit.dart';
@@ -31,22 +32,18 @@ import 'l10n/app_localizations.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Background message: ${message.notification?.title}');
+  final storage = SharedPrefsNotificationStorage();
+  await storage.add(AppNotification(
+    id: message.data['notification_id']?.toString() ??
+        DateTime.now().millisecondsSinceEpoch.toString(),
+    title: message.notification?.title ?? '',
+    body: message.notification?.body ?? '',
+    data: message.data,
+    receivedAt: DateTime.now(),
+  ));
 }
 
 Future<void> main() async {
-  @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    final storage = SharedPrefsNotificationStorage();
-    await storage.add(AppNotification(
-      id: message.data['notification_id']?.toString() ??
-          DateTime.now().millisecondsSinceEpoch.toString(),
-      title: message.notification?.title ?? '',
-      body: message.notification?.body ?? '',
-      data: message.data,
-      receivedAt: DateTime.now(),
-    ));
-  }
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
   //HttpOverrides.global = MyHttpOverrides();
@@ -63,9 +60,6 @@ Future<void> main() async {
       .resolvePlatformSpecificImplementation<
       AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
-  // سجّل الـ background handler
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.initialize();
   final themeCubit = ThemeCubit();
@@ -76,6 +70,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => BottomNavigationCubit()),
         BlocProvider(create: (_) => sl<OnboardingCubit>()),
         BlocProvider(create: (_) => sl<LoginCubit>()),
+        BlocProvider(create: (_) => sl<LogoutCubit>()),
         BlocProvider(create: (_) => sl<ForgetPasswordCubit>()),
         BlocProvider(create: (_) => sl<OtpCubit>()),
         BlocProvider(create: (_) => sl<PasswordCubit>()),

@@ -16,7 +16,6 @@ abstract class AuthLocalDataSource {
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   final SharedPreferences prefs;
-
   AuthLocalDataSourceImpl(this.prefs);
 
   @override

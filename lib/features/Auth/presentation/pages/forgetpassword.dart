@@ -5,6 +5,7 @@ import 'package:hotel_app/features/Auth/presentation/cubit/otp_cubit.dart';
 import 'package:hotel_app/features/Auth/presentation/pages/otp_page.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/email_field.dart';
 import 'package:hotel_app/features/Auth/presentation/widgets/auth_button.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -34,8 +35,8 @@ class Forgetpassword extends StatelessWidget {
 
         if (state is ForgetPasswordFail) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-              content: Text(l!.failedtosendOTP),
+            SnackBar(
+              content: Text(state.message),
             ),
           );
         }
@@ -82,14 +83,14 @@ class Forgetpassword extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                        l!.pleaseenteryouremail,
-                            style: Theme.of(context)
-                                .textTheme.displayMedium?.copyWith(fontSize: 15)
+                              l!.pleaseenteryouremail,
+                              style: Theme.of(context)
+                                  .textTheme.titleMedium?.copyWith(fontSize: 15,color: Colors.black)
                           ),
                           const SizedBox(height: 7),
                           Text(
-                          l.tosendOTP,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 15)
+                              l.tosendOTP,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15,color: Colors.black)
                           ),
 
                           const SizedBox(height: 30),
@@ -100,10 +101,12 @@ class Forgetpassword extends StatelessWidget {
 
                           const SizedBox(height: 30),
 
-                         CustomButton(
-                           textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
+                          CustomButton(
+                            textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14,color: Colors.black),
                             text: l.sendOTP,
-                            onPressed: () {
+                            onPressed: () async{
+                              String? signature = await SmsAutoFill().getAppSignature;
+                              print("APP SIGNATURE: $signature");
                               final email =
                               emailcontroller.text.trim();
                               context.read<ForgetPasswordCubit>().forgetpassword(email);

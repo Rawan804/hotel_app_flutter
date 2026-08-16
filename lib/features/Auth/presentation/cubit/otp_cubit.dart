@@ -40,13 +40,13 @@ class OtpCubit extends Cubit<OtpState> {
 
     result.fold(
           (failure) {
-        emit(OtpError("Server error"));
+        emit(OtpError(failure.message));
       },
           (isValid) {
         if (isValid == true) {
           emit(OtpVerified());
         } else {
-          emit(OtpError("Invalid OTP"));
+          emit(OtpError("الرمز غير صحيح أو انتهت صلاحيته"));
         }
       },
     );

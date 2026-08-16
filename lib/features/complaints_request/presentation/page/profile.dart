@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotel_app/features/Notifications/presentation/notifications_page.dart';
+import 'package:hotel_app/features/Auth/presentation/cubit/logout_cubit.dart';
+import 'package:hotel_app/features/Auth/presentation/cubit/logout_state.dart';
+import 'package:hotel_app/features/Auth/presentation/pages/login_page.dart';
 import 'package:hotel_app/features/news/presentation/widgets/BottomBar/bottombar.dart';
-import 'package:hotel_app/features/services/presentation/screens/ServicesPage.dart';
 import '../../../../app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../language/presentation/cubit/language_cubit.dart';
 import '../../../language/presentation/cubit/language_state.dart';
-import '../../../leave_request/presentation/cubit/leave_request_cubit.dart';
 import '../../../leave_request/presentation/page/leave_request_page.dart';
-
 import '../../../news/presentation/cubit/BottomBar Cubit/bottomba_cubit.dart';
 import 'complaints_page.dart';
 
@@ -39,8 +38,6 @@ class ProfilePage extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
               ),
               const SizedBox(height: 20),
-
-              // خيار العربي
               BlocBuilder<LanguageCubit, LanguageState>(
                 builder: (ctx, state) => _LanguageOption(
                     flag: '🇵🇸',
@@ -57,8 +54,6 @@ class ProfilePage extends StatelessWidget {
               ),
 
               const SizedBox(height: 12),
-
-              // خيار الإنجليزي
               BlocBuilder<LanguageCubit, LanguageState>(
                 builder: (ctx, state) => _LanguageOption(
                   flag: '🇺🇸',
@@ -90,10 +85,7 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ── Cover Header ─────────────────────────────────────
             const _CoverHeader(),
-
-            // ── List Sections ────────────────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 10, 16, 30),
               child: Column(
@@ -183,17 +175,6 @@ class ProfilePage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 28),
-
-                  Text(
-                    'v2.4.1 · Grand Azure Hotel',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.black.withOpacity(0.22),
-                      letterSpacing: 0.8,
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
                 ],
               ),
             ),
@@ -217,13 +198,33 @@ class ProfilePage extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
+          BlocListener<LogoutCubit, LogoutState>(
+  listener: (context, state) {
+if(state is LogoutSuccess){
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (_) =>  LoginPage(),
+    ),
+        (route) => false,
+  );
+}
+if (state is LogoutFailure) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(state.message)),
+  );
+}
+  },
+  child: TextButton(
+            onPressed: () {
+              context.read<LogoutCubit>().logout();
+            },
             child: const Text(
               'Sign Out',
               style: TextStyle(color: Color(0xFFBF4E30)),
             ),
           ),
+),
         ],
       ),
     );
@@ -249,148 +250,10 @@ class _CoverHeader extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-
-        // ── Dark gradient overlay ─────────────────────────────────
-        // Positioned.fill(
-        //   child: Container(
-        //     decoration: const BoxDecoration(
-        //       gradient: LinearGradient(
-        //         begin: Alignment.topCenter,
-        //         end: Alignment.bottomCenter,
-        //         colors: [
-        //           Colors.transparent,
-        //           Color(0x99000000),
-        //         ],
-        //         stops: [0.4, 1.0],
-        //       ),
-        //     ),
-        //   ),
-        // ),
-
-        // ── Top action buttons ────────────────────────────────────
-        // Positioned(
-        //   bottom: MediaQuery.of(context).padding.bottom + 10,
-        //   right: 16,
-        //   child: Row(
-        //     children: [
-        //       _TopIconButton(icon: Icons.favorite_border_rounded),
-        //       const SizedBox(width: 8),
-        //       _TopIconButton(
-        //         icon: Icons.notifications_none_rounded,
-        //         badge: true,
-        //       ),
-        //     ],
-        //   ),
-        // ),
-
-        // // // ── Avatar + name + subtitle ──────────────────────────────
-        // Positioned(
-        //   bottom: 24,
-        //   left: 10,
-        //   right: 0,
-        //   child: Column(
-        //     children: [
-        //       // Avatar
-        //       Container(
-        //         width: 72,
-        //         height: 72,
-        //         decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           border: Border.all(color: Colors.white, width: 3),
-        //           image: const DecorationImage(
-        //             image: AssetImage('images/img.png'),
-        //             fit: BoxFit.cover,
-        //           ),
-        //         ),
-        //       ),
-        //
-        //       const SizedBox(height: 10),
-        //
-        //       // Name
-        //       const Text(
-        //         'Rawan Aidi',
-        //         style: TextStyle(
-        //           color: Colors.white,
-        //           fontSize: 20,
-        //           fontWeight: FontWeight.w700,
-        //           letterSpacing: 0.2,
-        //         ),
-        //       ),
-        //
-        //       const SizedBox(height: 4),
-        //
-        //       // Tagline / email
-        //       Text(
-        //         'rawan@gmail.com',
-        //         style: TextStyle(
-        //           color: Colors.white.withOpacity(0.70),
-        //           fontSize: 13,
-        //           fontWeight: FontWeight.w400,
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        //
-        // // ── Rounded white sheet at the bottom ────────────────────
-        // Positioned(
-        //   bottom: -1,
-        //   left: 0,
-        //   right: 0,
-        //   child: Container(
-        //     height: 24,
-        //     decoration: const BoxDecoration(
-        //       color: Color(0xFFF5F3F0),
-        //       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }
 }
-
-// ─── Top action button ────────────────────────────────────────────────────────
-
-class _TopIconButton extends StatelessWidget {
-  final IconData icon;
-  final bool badge;
-
-  const _TopIconButton({required this.icon, this.badge = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.18),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(icon, color: Colors.white, size: 20),
-        ),
-        if (badge)
-          Positioned(
-            top: -2,
-            right: -2,
-            child: Container(
-              width: 9,
-              height: 9,
-              decoration: const BoxDecoration(
-                color: Color(0xFFBF4E30),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-// ─── Menu Card ────────────────────────────────────────────────────────────────
 
 class _MenuCard extends StatelessWidget {
   final List<_MenuItem> items;

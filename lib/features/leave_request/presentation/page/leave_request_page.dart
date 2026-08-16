@@ -10,8 +10,6 @@ import '../../../../core/constants/text_field.dart';
 
 class LeaveRequestPage extends StatelessWidget {
   LeaveRequestPage({super.key});
-
-  // ⭐ جديد — دالة فتح التقويم وتعبئة الحقل بصيغة yyyy-MM-dd
   Future<void> _pickDate(
       BuildContext context, TextEditingController controller) async {
     final now = DateTime.now();
@@ -21,14 +19,12 @@ class LeaveRequestPage extends StatelessWidget {
       final parsed = DateTime.tryParse(controller.text);
       if (parsed != null) initialDate = parsed;
     }
-
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: DateTime(now.year - 1),
       lastDate: DateTime(now.year + 5),
     );
-
     if (pickedDate != null) {
       final formatted = '${pickedDate.year.toString().padLeft(4, '0')}-'
           '${pickedDate.month.toString().padLeft(2, '0')}-'
@@ -163,12 +159,7 @@ class LeaveRequestPage extends StatelessWidget {
                               .displayMedium
                               ?.copyWith(fontSize: 18),
                           onPressed: () {
-                            context.read<LeaveRequestCubit>().addLeaveRequest(
-                              DateTime.parse(cubit.startDate.text),
-                              DateTime.parse(cubit.endDate.text),
-                              cubit.reason.text,
-                              cubit.leaveType.text,
-                            );
+                            context.read<LeaveRequestCubit>().addLeaveRequest();
                           },
                         ),
                       ),

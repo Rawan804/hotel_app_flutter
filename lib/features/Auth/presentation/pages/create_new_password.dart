@@ -85,7 +85,7 @@ class CreateNewPassword extends StatelessWidget {
                   Center(
                     child: Text(
                      l!.createNewPassword,
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20,fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20,fontWeight: FontWeight.w600,color: Colors.black),
                     ),
                   ),
 
@@ -116,7 +116,7 @@ class CreateNewPassword extends StatelessWidget {
 
                   SizedBox(height: 10), Column( crossAxisAlignment: CrossAxisAlignment.start, children: [
                     const SizedBox(height: 10),
-                    Text( l.passwordStrength, style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14), ),
+                    Text( l.passwordStrength, style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14,color: Colors.black), ),
                     const SizedBox(height: 12),
                     TweenAnimationBuilder<double>( tween: Tween( begin: 0, end: state.strength, ),
                       duration: const Duration(milliseconds: 500),
@@ -127,7 +127,6 @@ class CreateNewPassword extends StatelessWidget {
                       valueColor: AlwaysStoppedAnimation<Color>( value < 0.3 ? Colors.red : value < 0.7 ? Colors.orange : Colors.green, ), ), ); }, ), ], ),
                   SizedBox(height: 15),
 
-                  /// CONFIRM PASSWORD
                   Theme(
                     data: Theme.of(context).copyWith(
                       inputDecorationTheme: InputDecorationTheme(
@@ -165,6 +164,7 @@ class CreateNewPassword extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
+                        style: TextStyle(color: Colors.black),
                         state.isMatch
                             ? l.passwordsmatch
                             : l.passwordsdontmatch,
@@ -176,7 +176,7 @@ class CreateNewPassword extends StatelessWidget {
 
                   Text(
                     l.passwordmustcontain,
-                    style:     Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
+                    style:     Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20,color: Colors.black),
                     ),
 
 

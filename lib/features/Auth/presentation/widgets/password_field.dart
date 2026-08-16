@@ -25,16 +25,18 @@ class _PasswordFieldState extends State<PasswordField> {
   Widget build(BuildContext context) {
     final l=AppLocalizations.of(context);
     return TextFormField(
+
       controller: widget.controller,
       onChanged: widget.onChanged,
       obscureText: obscure,
+      style: TextStyle(color: Colors.black),
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         fillColor: Color(0xFFF7e2d3),
         labelText: l!.password,
         hintText: l.enterPassword,
-        labelStyle: Theme.of(context).textTheme.labelMedium,
-        hintStyle: Theme.of(context).textTheme.bodyLarge,
+        labelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.black),
+        hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.black),
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
@@ -54,8 +56,6 @@ class _PasswordFieldState extends State<PasswordField> {
             color: AppColors.primaryDark,
           ),
         ),
-
-        // 👁️ ICON
         suffixIcon: IconButton(
           onPressed: () {
             setState(() {

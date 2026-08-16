@@ -8,7 +8,7 @@ abstract class AuthRepositories {
   Future<Either<Failure, Unit>> forgetPassword(String email);
   Future<Either<Failure, Unit>> resend_OTP(String email);
   Future<Either<Failure, bool>> verifyOtp(String email, String otp);
-
+  Future<Either<Failure, Unit>> logout();
   Future<Either<Failure, User>>createNewPassword(
       String email, String otp , String password);
 }

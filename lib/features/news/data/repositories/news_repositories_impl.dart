@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:hotel_app/core/error/%20exceptions.dart';
+import 'package:hotel_app/core/error/exceptions.dart';
 import 'package:hotel_app/features/news/data/data_sources/news_remote_datasource.dart';
 import 'package:hotel_app/features/news/domain/repositories/news_repositories.dart';
 
@@ -11,7 +11,6 @@ class NewsRepositoriesImpl implements NewsRepositories {
 
   NewsRepositoriesImpl({
     required this.newsRemoteDataSources,
-
   });
 
   @override
@@ -19,22 +18,26 @@ class NewsRepositoriesImpl implements NewsRepositories {
     try {
       final remoteNews = await newsRemoteDataSources.getAllNews();
       return Right(remoteNews);
-    }
-    on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(e.message));
     }
   }
 
   @override
-  Future<Either<Failure, News>>
-  getAllNewsDetails(int id) async {
+  Future<Either<Failure, News>> getAllNewsDetails(int id) async {
     try {
-      final remoteNewsDetails =
-      await newsRemoteDataSources.getAllDetailsNews(id);
-
+      final remoteNewsDetails = await newsRemoteDataSources.getAllDetailsNews(id);
       return Right(remoteNewsDetails);
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(e.message));
     }
   }
 }

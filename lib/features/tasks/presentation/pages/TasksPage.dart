@@ -7,37 +7,36 @@ import '../widget/task.dart';
 
 class TasksPage extends StatelessWidget {
   TasksPage({super.key});
-
-  // final List<Map<String, dynamic>> tasks = [
-  //   {
-  //     "title": "Prepare Suite 412",
-  //     "status": "In Progress",
-  //     "color": Colors.orange,
-  //     "done": 3,
-  //     "total": 5,
-  //   },
-  //
-  //   {
-  //     "title": "Breakfast Service",
-  //     "status": "Completed",
-  //     "color": Colors.green,
-  //     "done": 5,
-  //     "total": 5,
-  //   },
-  //   {
-  //     "title": "Conference Setup",
-  //     "status": "Pending",
-  //     "color": Colors.red,
-  //     "done": 1,
-  //     "total": 4,
-  //   },
-  // ];
-
-  @override
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskDetailsCubit, TaskState>(
       builder: (context, state) {
+        if (state is TaskFail) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.error_outline, size: 40, color: Colors.grey),
+                  const SizedBox(height: 12),
+                  Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () =>
+                        context.read<TaskDetailsCubit>().getAllTask(),
+                    child: const Text("إعادة المحاولة"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         List<TaskEntity> tasks = [];
 
         if (state is TaskSuccses) {

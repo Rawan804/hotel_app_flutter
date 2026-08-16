@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:hotel_app/core/services.dart';
 import 'package:hotel_app/features/Auth/domain/usecases/%20loginUseCase.dart';
 
 import 'package:meta/meta.dart';
@@ -20,12 +21,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     final result=await loginUseCase(email,password);
     result.fold((failure){
-      emit(LoginFailure("Login failed"));
+      emit(LoginFailure(failure.message));
     }, (user) {
       emit(LoginSuccess(user));
-
-
-
-});}
+      NotificationService.sendCurrentTokenToBackend();
+    });}
 
 }

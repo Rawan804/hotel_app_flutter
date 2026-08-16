@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hotel_app/l10n/app_localizations.dart';
 
-// ─────────────────────────────────────────────
-//  Theme identifiers
-// ─────────────────────────────────────────────
 enum AppThemeType {
   royalBlue,
   dustyRose,
@@ -17,10 +14,6 @@ enum AppThemeType {
   midnightPurple,
 
 }
-
-// ─────────────────────────────────────────────
-//  Palette tokens per theme
-// ─────────────────────────────────────────────
 class _Palette {
   final Color background;
   final Color surface;
@@ -46,50 +39,43 @@ class _Palette {
 }
 
 const _palettes = <AppThemeType, _Palette>{
-  // ── Royal Blue ──────────────────────────────
   AppThemeType.royalBlue: _Palette(
-    background:    Color(0xFF0D1B2A), // كحلي عميق
+    background:    Color(0xFF0D1B2A),
     surface:       Color(0xFF162032),
     appBar:        Color(0xFF0A1628),
     primary:       Color(0xFF1E3A5F),
-    accent:        Color(0xFFCBA135), // ذهبي ملكي
+    accent:        Color(0xFFCBA135),
     textPrimary:   Color(0xFFE8F0F7),
     textSecondary: Color(0xFFA8C0D8),
     navSelected:   Color(0xFFCBA135),
     navUnselected: Color(0xFF4A6FA5),
   ),
-
-  // ── Dusty Rose ──────────────────────────────
   AppThemeType.dustyRose: _Palette(
-    background:    Color(0xFF2A1A20), // بيرغاندي غامق
+    background:    Color(0xFF2A1A20),
     surface:       Color(0xFF3B2530),
     appBar:        Color(0xFF221520),
     primary:       Color(0xFF8B4A5E),
-    accent:        Color(0xFFE8B4C0), // وردي باستيل
+    accent:        Color(0xFFE8B4C0),
     textPrimary:   Color(0xFFF5E8EC),
     textSecondary: Color(0xFFD4A8B5),
     navSelected:   Color(0xFFE8B4C0),
     navUnselected: Color(0xFF9E6E7E),
   ),
-
-  // ── Dark Espresso ────────────────────────────
   AppThemeType.darkEspresso: _Palette(
-    background:    Color(0xFF2D1B12), // بني غامق جداً
+    background:    Color(0xFF2D1B12),
     surface:       Color(0xFF4a342a),
     appBar:        Color(0xFF170D06),
     primary:       Color(0xFF2D1B12),
-    accent:        Color(0xFFC49A6C), // برونزي دافئ
+    accent:        Color(0xFFC49A6C),
     textPrimary:   Color(0xFFF5E6D3),
     textSecondary: Color(0xFFD4B89A),
     navSelected:   Color(0xFFC49A6C),
     navUnselected: Color(0xFF8D6E63),
   ),
-
-  // ── Warm Linen ──────────────────────────────
   AppThemeType.warmLinen: _Palette(
-    background:    Color(0xFFF5EFE4), // كريم دافئ
+    background:    Color(0xFFF5EFE4),
     surface:       Color(0xFFD4AF7F),
-    appBar:        Color(0xFF5C4A32), // بني خشبي
+    appBar:        Color(0xFF5C4A32),
     primary:       Color(0xFFAA9070),
     accent:        Color(0xFFE7DFCB),
     textPrimary:   Color(0xFF2C1F0E),
@@ -97,39 +83,34 @@ const _palettes = <AppThemeType, _Palette>{
     navSelected:   Color(0xFFBF8C3A),
     navUnselected: Color(0xFFAA9070),
   ),
-
-  // ── Forest Emerald ───────────────────────────
   AppThemeType.forestEmerald: _Palette(
-    background:    Color(0xFF0A1F15), // أخضر غابة داكن
+    background:    Color(0xFF0A1F15),
     surface:       Color(0xFF112B1C),
     appBar:        Color(0xFF081910),
     primary:       Color(0xFF1B4332),
-    accent:        Color(0xFFB87333), // نحاسي
+    accent:        Color(0xFFB87333),
     textPrimary:   Color(0xFFE0F0E8),
     textSecondary: Color(0xFF9DC4A8),
     navSelected:   Color(0xFFB87333),
     navUnselected: Color(0xFF4A8C62),
   ),
-  // ── Baby Blue ──────────────────────────────
   AppThemeType.babyBlue: _Palette(
-    background:    Color(0xFFF5FAFF), // أزرق ثلجي فاتح
+    background:    Color(0xFFF5FAFF),
     surface:       Color(0xFF6FAEE8),
     appBar:        Color(0xFFB8DFFF),
     primary:       Color(0xFF9CCEF5),
-    accent:        Color(0xFF6FAEE8), // أزرق بيبي
+    accent:        Color(0xFF6FAEE8),
     textPrimary:   Color(0xFF081910),
     textSecondary: Color(0xFF5D7FA3),
     navSelected:   Color(0xFF6FAEE8),
     navUnselected: Color(0xFFA8C7E6),
   ),
-
-// ── Baby Pink ──────────────────────────────
   AppThemeType.babyPink: _Palette(
-    background:    Color(0xFFFFF7FA), // وردي ثلجي
+    background:    Color(0xFFFFF7FA),
     surface:       Color(0xFFD9AFC0),
     appBar:        Color(0xFFFCC8DA),
     primary:       Color(0xFFF7AFC8),
-    accent:        Color(0xFFE88AB0), // وردي بيبي
+    accent:        Color(0xFFE88AB0),
     textPrimary:   Color(0xFF6B3551),
     textSecondary: Color(0xFF9A6880),
     navSelected:   Color(0xFFE88AB0),
@@ -139,10 +120,8 @@ const _palettes = <AppThemeType, _Palette>{
     background: Color(0xFF0B0B0B),
     surface: Color(0xFF171717),
     appBar: Color(0xFF101010),
-
     primary: Color(0xFF2A2A2A),
     accent: Color(0xFFD4AF37),
-
     textPrimary: Color(0xFFF8F8F8),
     textSecondary: Color(0xFFB5B5B5),
 
@@ -153,13 +132,10 @@ const _palettes = <AppThemeType, _Palette>{
     background: Color(0xFFF4EFFF),
     surface: Color(0xFF7D6996),
     appBar: Color(0xFF0F071A),
-
     primary: Color(0xFF7D6996),
     accent: Color(0xFFD4A5FF),
-
     textPrimary: Color(0xFF0F071A),
     textSecondary: Color(0xFFC8B4E3),
-
     navSelected: Color(0xFFD4A5FF),
     navUnselected: Color(0xFF7D6996),
   ),
@@ -255,10 +231,6 @@ const themeMeta = <AppThemeType, ThemeMeta>{
     previewColor: Color(0xFF35214F),
     previewAccent: Color(0xFFD4A5FF),
   ),};
-
-// ─────────────────────────────────────────────
-//  Theme builder
-// ─────────────────────────────────────────────
 class AppThemes {
   AppThemes._();
 

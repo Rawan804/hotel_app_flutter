@@ -40,7 +40,7 @@ class TaskDetailsCubit extends Cubit<TaskState> {
 
     result.fold(
           (failure) {
-        emit(TaskFail(message: 'Failed'));
+        emit(TaskFail(message: failure.message));
       },
           (tasksList) {
         cachedTasks = tasksList;
@@ -53,7 +53,7 @@ class TaskDetailsCubit extends Cubit<TaskState> {
     final result = await toggleTaskUseCase(id);
 
     result.fold(
-          (failure) => emit(TaskFail(message: "Failed")),
+          (failure) => emit(TaskFail(message: failure.message)),
           (updatedItem) async {
         emit(TaskToggle(updatedItem));
         final freshResult = await getAllTaskUseCase();
@@ -73,7 +73,7 @@ class TaskDetailsCubit extends Cubit<TaskState> {
     final result = await endTaskUseCase(id);
 
     result.fold(
-          (failure) => emit(TaskFail(message: "Failed")),
+          (failure) => emit(TaskFail(message: failure.message)),
           (_) async {
 
         final freshResult = await getAllTaskUseCase();

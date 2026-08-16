@@ -1,18 +1,5 @@
 import 'package:flutter/foundation.dart';
 import '../../../../l10n/app_localizations.dart';
-
-/// طريقة الاستخدام لم تتغير:
-///   t.byKey('reception_title')
-///   t.byKeyList('reception_details')
-///
-/// الفرق عن النسخة القديمة:
-/// 1) ما فيه اعتماد على سقف ثابت (كان 0..6). كل قائمة طولها الحقيقي فقط،
-///    فلو صار عندك 8 عناصر بقسم معين، تضيف سطر واحد بس هنا ويشتغل فوراً
-///    بدون ما ينحذف أي عنصر بصمت.
-/// 2) خطأ إملائي بالمفتاح ما عاد يرجع نفس الـ key بصمت — برجع نفس السلوك
-///    (fallback) بس مع تحذير بالـ debug console يساعدك تكتشف الغلط بدري.
-/// 3) Map بدل switch: أسهل قراءة وصيانة، وبناءه مرة وحدة فقط (static final)
-///    فما فيه استهلاك ذاكرة إضافي أو إعادة إنشاء بكل استدعاء.
 extension AppLocalizationsKeyLookup on AppLocalizations {
   static final Map<String, String Function(AppLocalizations)> _singleKeys = {
     'reception_title': (t) => t.reception_title,
@@ -33,12 +20,6 @@ extension AppLocalizationsKeyLookup on AppLocalizations {
     'ethics_title': (t) => t.ethics_title,
     'ethics_subtitle': (t) => t.ethics_subtitle,
   };
-
-  // ---------------------------------------------------------------------
-  // مفاتيح قوائم (details / items...)
-  // كل List طولها بالظبط بعدد العناصر الموجودة فعلياً بملف الـ ARB —
-  // ما فيه افتراض عدد أعلى أو أدنى.
-  // ---------------------------------------------------------------------
   static final Map<String, List<String Function(AppLocalizations)>>
   _listKeys = {
     'reception_details': [
@@ -96,10 +77,6 @@ extension AppLocalizationsKeyLookup on AppLocalizations {
           (t) => t.ethics_items_6,
     ],
   };
-
-  /// يرجع نص مترجم لمفتاح مفرد.
-  /// لو المفتاح غير موجود بالـ Map (خطأ إملائي مثلاً)، برجع الـ key نفسه
-  /// كـ fallback (نفس سلوك النسخة القديمة)، بس مع تحذير بوضع debug فقط.
   String byKey(String key) {
     final getter = _singleKeys[key];
     if (getter == null) {
@@ -110,10 +87,6 @@ extension AppLocalizationsKeyLookup on AppLocalizations {
     }
     return getter(this);
   }
-
-  /// يرجع قائمة نصوص مترجمة (details/items) حسب المفتاح الأساسي.
-  /// لو المفتاح غير موجود، برجع قائمة فاضية بدل ما يكسر الواجهة،
-  /// مع تحذير بوضع debug فقط.
   List<String> byKeyList(String baseKey) {
     final getters = _listKeys[baseKey];
     if (getters == null) {

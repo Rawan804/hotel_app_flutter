@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_app/core/services.dart';
 import 'package:hotel_app/features/Auth/presentation/cubit/create_new_password_state.dart';
 
 import '../../domain/usecases/ResetPasswordUseCase.dart';
@@ -12,10 +13,11 @@ class PasswordCubit extends Cubit<PasswordState> {
     final result =await resetPasswordUseCase(email,otp,password);
     result.fold(
           (failure) {
-        emit(NewPasswordFail("Server error"));
+        emit(NewPasswordFail(failure.message));
       },
           (_) {
         emit(NewPasswordSuccess());
+        NotificationService.sendCurrentTokenToBackend();
       },
     );
   }

@@ -99,25 +99,6 @@ class NotificationService {
         receivedAt: DateTime.now(),
       ),
     );
-
-    final list = await _storage.getAll();
-    print("بعد الحفظ: ${list.map((e) => e.title).toList()}");
-
-    print("بعد add:");
-    for (final n in list) {
-      print("${n.id} - ${n.title}");
-    }
-
-    // إذا كان من Firebase Console خزنيه
-    await _storage.add(
-      AppNotification(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        title: notification?.title ?? '',
-        body: notification?.body ?? '',
-        data: message.data,
-        receivedAt: DateTime.now(),
-      ),
-    );
   }
   static Future<void> _showLocalNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
@@ -139,6 +120,14 @@ class NotificationService {
         ),
         payload: jsonEncode(message.data),
       );}}
+  /// يُستدعى بعد نجاح تسجيل الدخول مباشرة، عشان الباك اند يعرف الـ FCM token
+  /// تبع هالجهاز حتى لو أول مرة فُتح فيها التطبيق كان المستخدم غير مسجل دخول.
+  static Future<void> sendCurrentTokenToBackend() async {
+    final token = await _messaging.getToken();
+    if (token != null) {
+      await _sendTokenToBackend(token);
+    }
+  }
   static Future<void> _sendTokenToBackend(String fcmToken) async {
     try {
       final prefs = await SharedPreferences.getInstance();

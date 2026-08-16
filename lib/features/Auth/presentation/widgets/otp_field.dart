@@ -1,61 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pinput/pinput.dart';
 import 'package:hotel_app/core/constants/app_colors.dart';
 
 class OtpField extends StatelessWidget {
   final Function(String otp) onChanged;
 
-  OtpField({
+  const OtpField({
     super.key,
     required this.onChanged,
   });
 
-  final List<TextEditingController> controllers =
-  List.generate(6, (_) => TextEditingController());
-
-  void _sendOtp() {
-    final otp = controllers.map((c) => c.text).join();
-    onChanged(otp);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: List.generate(6, (index) {
-        return SizedBox(
-          width: 45,
-          height: 55,
-          child: TextField(
+    final defaultPinTheme = PinTheme(
+      width: 45,
+      height: 55,
+      textStyle: const TextStyle(
 
-            controller: controllers[index],
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number,
-            maxLength: 1,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: InputDecoration(
-              fillColor: AppColors.background,
-              counterText: "",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onChanged: (value) {
-              _sendOtp();
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+    );
 
-              if (value.isNotEmpty && index < 5) {
-                FocusScope.of(context).nextFocus();
-              }
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: AppColors.primary, width: 1.5),
+    );
 
-              if (value.isEmpty && index > 0) {
-                FocusScope.of(context).previousFocus();
-              }
-            },
-          ),
-        );
-      }),
+    final submittedPinTheme = defaultPinTheme.copyWith(
+      decoration: defaultPinTheme.decoration!.copyWith(
+        color: AppColors.primaryDark,
+        border: Border.all(color: Colors.grey.shade400),
+      ),
+    );
+
+    return Pinput(
+
+      length: 6,
+      defaultPinTheme: defaultPinTheme,
+      focusedPinTheme: focusedPinTheme,
+      submittedPinTheme: submittedPinTheme,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      onChanged: (value) => onChanged(value),
+      onCompleted: (value) => onChanged(value),
     );
   }
 }

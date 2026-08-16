@@ -13,11 +13,11 @@ class ServicesModel extends ServiceEntity {
 
   factory ServicesModel.fromJson(Map<String, dynamic> json) {
     return ServicesModel(
-      id: json['id'],
-      service_name: json['service_name'],
-      service_location: json['service_location'],
-      details: json['details'],
-      status: json['status'],
+      id: json['id'] is int ? json['id'] : int.tryParse('${json['id']}') ?? 0,
+      service_name: json['service_name']?.toString() ?? '',
+      service_location: json['service_location']?.toString() ?? '',
+      details: json['details']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
     );
   }
 }

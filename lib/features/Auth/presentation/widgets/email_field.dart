@@ -14,12 +14,18 @@ class EmailField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.text,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+      ),
       decoration: InputDecoration(
         fillColor: Color(0xFFF7e2d3),
+        filled: true,
         labelText: l!.email,
         hintText: l.enteremail,
-        labelStyle:  Theme.of(context).textTheme.labelMedium,
-        hintStyle:  Theme.of(context).textTheme.bodyLarge,
+        labelStyle:  Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.black),
+        hintStyle:  Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.black),
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),

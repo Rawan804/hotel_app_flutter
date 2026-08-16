@@ -17,36 +17,47 @@ class Newscards extends StatefulWidget {
 }
 
 class _NewscardsState extends State<Newscards> {
-  final PageController controller =
-  PageController(initialPage: 1000, viewportFraction: 0.92);
-
+  final PageController controller = PageController(initialPage: 1000, viewportFraction: 0.92);
   final GlobalKey<FlipCardState> flipKey = GlobalKey<FlipCardState>();
-
   bool _run = false;
+  final List<Timer> _timers = [];
 
   void _hint() {
     if (_run) return;
     _run = true;
 
-    Future.delayed(const Duration(milliseconds: 800), () {
+    _timers.add(Timer(const Duration(milliseconds: 800), () {
+      if (!mounted || !controller.hasClients) return;
       controller.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
-    });
+    }));
 
-    Future.delayed(const Duration(milliseconds: 1600), () {
+    _timers.add(Timer(const Duration(milliseconds: 1600), () {
+      if (!mounted) return;
       flipKey.currentState?.toggleCard();
-    });
+    }));
 
-    Future.delayed(const Duration(milliseconds: 2800), () {
+    _timers.add(Timer(const Duration(milliseconds: 2800), () {
+      if (!mounted) return;
       flipKey.currentState?.toggleCard();
 
+      if (!controller.hasClients) return;
       controller.previousPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
-    });
+    }));
+  }
+
+  @override
+  void dispose() {
+    for (final t in _timers) {
+      t.cancel();
+    }
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,7 +66,6 @@ class _NewscardsState extends State<Newscards> {
 
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
-        print(state.runtimeType);
         if (state is NewsLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -64,7 +74,17 @@ class _NewscardsState extends State<Newscards> {
 
         if (state is NewsFail) {
           return Center(
-            child: Text(state.message),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(state.message, textAlign: TextAlign.center),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => context.read<NewsCubit>().getAllNews(),
+                  child: const Text("إعادة المحاولة"),
+                ),
+              ],
+            ),
           );
         }
         if (state is NewsSuccess) {

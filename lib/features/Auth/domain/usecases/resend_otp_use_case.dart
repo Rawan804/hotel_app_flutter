@@ -7,6 +7,6 @@ class ResendOtpUseCase{
   final AuthRepositories authRepositories;
   ResendOtpUseCase(this.authRepositories);
   Future<Either<Failure, Unit>>call(String email){
-    return authRepositories.forgetPassword(email);
+    return authRepositories.resend_OTP(email);
   }
 }

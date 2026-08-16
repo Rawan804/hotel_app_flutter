@@ -51,13 +51,10 @@ class LoginPage extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               ),
-
               Container(
                 color: Colors.black.withOpacity(0.4),
               ),
-
               Container(
-
                 padding: const EdgeInsets.only(
                   top: 270,
                   left: 10,
@@ -83,7 +80,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Text(
                             l!.welcome,
-                            style:  Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
+                            style:  Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 20,color: Colors.black),
 
                           ),
 
@@ -92,9 +89,7 @@ class LoginPage extends StatelessWidget {
                           EmailField(controller: emailcontroller),
                           const SizedBox(height: 20),
                           PasswordField(controller: passwordController),
-
                           const SizedBox(height: 10),
-
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -107,7 +102,7 @@ class LoginPage extends StatelessWidget {
                                 );
                               },
                               child:  Text(
-                                l.forgetpassword,style:      Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14),
+                                l.forgetpassword,style:      Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12,color: Colors.black),
                               ),
                             ),
                           ),
@@ -119,7 +114,7 @@ class LoginPage extends StatelessWidget {
                               : CustomButton(
                             text:l.login,
                             textStyle:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
+                            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 15,color: Colors.black),
 
                             onPressed: () {
                               context.read<LoginCubit>().login(

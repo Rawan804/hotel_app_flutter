@@ -5,17 +5,22 @@ import 'package:hotel_app/features/tasks/presentation/cubit/task_details_state.d
 import 'package:hotel_app/features/tasks/presentation/widget/TaskCard.dart';
 import 'package:hotel_app/features/tasks/presentation/widget/TaskHeader.dart';
 import 'package:hotel_app/features/tasks/presentation/widget/filterbar.dart';
-import '../../../../core/util/date_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entites/task.dart';
-
 class Taskdetails extends StatelessWidget {
   final TaskEntity task;
   const Taskdetails({super.key, required this.task,});
   @override
   Widget build(BuildContext context) {
     final l=AppLocalizations.of(context);
-    return BlocBuilder<TaskDetailsCubit, TaskState>(
+    return BlocConsumer<TaskDetailsCubit, TaskState>(
+      listener: (context, state) {
+        if (state is TaskFail) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
       builder: (context, state) {
         if (state is TaskSuccses || state is TaskToggle) {
           late TaskEntity currentTask;

@@ -46,19 +46,15 @@ class ComplaintForm extends   StatelessWidget{
               mainAxisSize: MainAxisSize.min,
 
               children: [
-
-                // 🔵 Title
-                 Align(
-                   alignment: Alignment.topCenter,
-                   child: Text(
-                 l!.sendComplaint,
-                    style:Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20)
-                                 ),
-                 ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                      l!.sendComplaint,
+                      style:Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20)
+                  ),
+                ),
 
                 const SizedBox(height: 30),
-
-                // 🔵 Title Field
                 TextField(
                   controller: cubit.titleController,
                   decoration: InputDecoration(
@@ -75,7 +71,6 @@ class ComplaintForm extends   StatelessWidget{
 
                 const SizedBox(height: 25),
 
-                // 🔵 Description Field
                 TextField(
                   controller: cubit.descController,
                   maxLines: 4,
@@ -90,13 +85,11 @@ class ComplaintForm extends   StatelessWidget{
                 ),
 
                 const SizedBox(height: 40),
-
-                // 🔵 Button
                 Row(
                   children: [
 
                     SizedBox(
-                   width: 120,
+                      width: 120,
                       height: 50,
                       child: state is ComplaintsRequestLoading
                           ? const Center(child: CircularProgressIndicator())
@@ -116,7 +109,7 @@ class ComplaintForm extends   StatelessWidget{
                           Navigator.pop(context);
                         },
                         child:  Text(
-                        l.cancel,
+                          l.cancel,
                           style: TextStyle(color:AppColors.primaryDark),
                         ),
                       ),
@@ -131,9 +124,7 @@ class ComplaintForm extends   StatelessWidget{
                                   .displayMedium
                                   ?.copyWith(fontSize: 18),
                               onPressed: () {
-                                context.read<ComplaintsRequestCubit>().addComplaints(
-                            cubit.titleController.text,cubit.descController.text
-                                );
+                                context.read<ComplaintsRequestCubit>().addComplaints();
                               },
                             ))),
                   ],
