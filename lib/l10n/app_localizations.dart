@@ -197,12 +197,6 @@ abstract class AppLocalizations {
   /// **'Pending'**
   String get pending;
 
-  /// No description provided for @done.
-  ///
-  /// In en, this message translates to:
-  /// **'done'**
-  String get done;
-
   /// No description provided for @news.
   ///
   /// In en, this message translates to:
@@ -556,6 +550,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stay in control with smart reminders and seamless workflow management'**
   String get onboardingDesc4;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get done;
 
   /// No description provided for @left.
   ///
@@ -1018,6 +1018,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Service From Customer'**
   String get serviceFromCustomer;
+
+  /// No description provided for @serverErrorDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on our side. Please try again later.'**
+  String get serverErrorDefault;
+
+  /// No description provided for @networkErrorDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection and try again.'**
+  String get networkErrorDefault;
+
+  /// No description provided for @sessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please log in again.'**
+  String get sessionExpired;
+
+  /// No description provided for @validationErrorDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check the entered data.'**
+  String get validationErrorDefault;
+
+  /// No description provided for @cacheErrorDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while reading the saved data.'**
+  String get cacheErrorDefault;
+
+  /// No description provided for @connectionTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection timed out. Please try again.'**
+  String get connectionTimeout;
+
+  /// No description provided for @unexpectedServerResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected response from the server.'**
+  String get unexpectedServerResponse;
+
+  /// No description provided for @dataNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested data was not found.'**
+  String get dataNotFound;
+
+  /// No description provided for @complaintTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the complaint title.'**
+  String get complaintTitleRequired;
+
+  /// No description provided for @complaintDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the complaint description.'**
+  String get complaintDescriptionRequired;
+
+  /// No description provided for @complaintSubmittedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint submitted successfully.'**
+  String get complaintSubmittedSuccess;
+
+  /// No description provided for @leaveDatesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select the start and end dates.'**
+  String get leaveDatesRequired;
+
+  /// No description provided for @leaveReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the reason for the leave.'**
+  String get leaveReasonRequired;
+
+  /// No description provided for @leaveTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select the leave type.'**
+  String get leaveTypeRequired;
+
+  /// No description provided for @invalidDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date format.'**
+  String get invalidDateFormat;
+
+  /// No description provided for @endDateAfterStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'The end date must be after the start date.'**
+  String get endDateAfterStartDate;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @noServiceRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No service requests'**
+  String get noServiceRequests;
+
+  /// No description provided for @noNotificationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Notifications Yet'**
+  String get noNotificationsYet;
+
+  /// No description provided for @whenYouarereceiveNotificationItWillBeSEEHere.
+  ///
+  /// In en, this message translates to:
+  /// **'When you are receive notifications you are see here'**
+  String get whenYouarereceiveNotificationItWillBeSEEHere;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

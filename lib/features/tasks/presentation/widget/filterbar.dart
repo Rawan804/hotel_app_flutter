@@ -19,7 +19,7 @@ class Filterbar extends StatelessWidget {
         const SizedBox(width: 22),
         _chip(context, l.done, l.done, currentFilter),
         const SizedBox(width: 22),
-        _chip(context, l.pending,l.pending, currentFilter),
+        _chip(context, l.in_progress,l.in_progress, currentFilter),
       ],
     );
   }

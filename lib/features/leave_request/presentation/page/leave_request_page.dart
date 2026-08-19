@@ -7,9 +7,12 @@ import 'package:hotel_app/features/leave_request/presentation/cubit/leave_reques
 import 'package:hotel_app/l10n/app_localizations.dart';
 
 import '../../../../core/constants/text_field.dart';
+import '../../../../core/util/AppMesaage.dart';
+
 
 class LeaveRequestPage extends StatelessWidget {
   LeaveRequestPage({super.key});
+
   Future<void> _pickDate(
       BuildContext context, TextEditingController controller) async {
     final now = DateTime.now();
@@ -52,16 +55,15 @@ class LeaveRequestPage extends StatelessWidget {
         listener: (context, state) {
           if (state is LeaveRequestSuccess) {
             context.read<LeaveRequestCubit>().clearFields();
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            Navigator.pop(context, state.message);
           }
-
           if (state is LeaveRequestFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+            final message = _getErrorMessage(
+              context,
+              state.message,
             );
+
+            Navigator.pop(context, message);
           }
         },
         builder: (context, state) {
@@ -94,7 +96,6 @@ class LeaveRequestPage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-
 
                 CustomTextField(
                   controller: cubit.endDate,
@@ -172,5 +173,31 @@ class LeaveRequestPage extends StatelessWidget {
         },
       ),
     );
+  }
+  String _getErrorMessage(
+      BuildContext context,
+      String key,
+      ) {
+    final l = AppLocalizations.of(context)!;
+
+    switch (key) {
+      case 'leaveDatesRequired':
+        return l.leaveDatesRequired;
+
+      case 'leaveReasonRequired':
+        return l.leaveReasonRequired;
+
+      case 'leaveTypeRequired':
+        return l.leaveTypeRequired;
+
+      case 'invalidDateFormat':
+        return l.invalidDateFormat;
+
+      case 'endDateAfterStartDate':
+        return l.endDateAfterStartDate;
+
+      default:
+        return key;
+    }
   }
 }

@@ -119,6 +119,7 @@ Future<void> init() async {
         () => Leave_Remote_Data_Sources_Impl(
       client: sl(),
       authLocalDataSource: sl(),
+          localDataSource: sl()
     ),
   );
   sl.registerLazySingleton<LeaveRequestRepositories>(

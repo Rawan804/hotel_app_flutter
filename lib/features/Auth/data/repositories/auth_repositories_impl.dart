@@ -23,6 +23,7 @@ class AuthRepositoryImpl implements AuthRepositories {
       await authLocalDataSource.saveToken(userModel.token);
       await authLocalDataSource.saveImage(userModel.staff.image);
       await authLocalDataSource.savename(userModel.staff.name);
+      await authLocalDataSource.saveEmail(email); // ⭐ جديد: احفظ إيميل اليوزر الحالي
 
       return Right(userModel);
     } on ServerException catch (e) {
@@ -72,10 +73,12 @@ class AuthRepositoryImpl implements AuthRepositories {
   Future<Either<Failure, User>> createNewPassword(
       String email, String otp, String password) async {
     try {
-      final userModel = await authRemoteDataSource.createNewPassword(email, otp, password);
+      final userModel =
+      await authRemoteDataSource.createNewPassword(email, otp, password);
       await authLocalDataSource.saveToken(userModel.token);
       await authLocalDataSource.saveImage(userModel.staff.image);
       await authLocalDataSource.savename(userModel.staff.name);
+      await authLocalDataSource.saveEmail(email); // ⭐ جديد
       return Right(userModel);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
@@ -89,6 +92,10 @@ class AuthRepositoryImpl implements AuthRepositories {
     try {
       final result = await authRemoteDataSource.logout();
       await authLocalDataSource.removeToken();
+      // ملاحظة: ما منمسح الإيميل هون عمداً، حتى إذا رجع نفس اليوزر
+      // يسجل دخول، منقدر نلاقي سجل الإشعارات تبعه بسهولة.
+      // إذا بدك تفرض عدم ظهور أي بيانات قبل تسجيل الدخول، فعّل السطر التالي:
+      // await authLocalDataSource.removeEmail();
       return Right(result);
     } on ServerException catch (e) {
       await authLocalDataSource.removeToken();

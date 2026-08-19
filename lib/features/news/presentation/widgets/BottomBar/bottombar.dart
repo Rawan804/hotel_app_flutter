@@ -2,10 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_app/core/constants/app_colors.dart';
+import 'package:hotel_app/core/util/date_formatter.dart';
 import 'package:hotel_app/features/Auth/presentation/pages/login_page.dart';
-
 import 'package:hotel_app/features/complaints_request/presentation/page/profile.dart';
-
 import '../../../../Notifications/presentation/notifications_page.dart';
 import '../../../../guide/presentation/guid_page.dart';
 import '../../../../services/presentation/cubit/services_cubit.dart';
@@ -67,7 +66,7 @@ class Bottombar extends StatelessWidget {
             // عدّل هذا السطر حسب شكل الـ state الفعلي عندك
             final pendingCount = servicesState is ServiceSuccess
                 ? servicesState.services
-                .where((s) => s.status == 'pending')
+                .where((s) => isTaskPending(s.status))
                 .length
                 : 0;
 

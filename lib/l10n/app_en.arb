@@ -17,7 +17,7 @@
     "rawanAidy":"Rawan Aidy",
     "tasks":"Tasks",
     "pending":"Pending",
-    "done":"Done",
+
      "news":"News",
       "taptoviewdetails":"Tap to view details",
       "organizemotivateachieve":"Organize.Motivate.Achieve",
@@ -81,7 +81,7 @@
 
                    "onboardingTitle4": "Never miss an important task",
                    "onboardingDesc4": "Stay in control with smart reminders and seamless workflow management",
-                       "done":"done",
+                       "done":"Completed",
                         "left":"left",
                         "all":"All",
                           "appearance":"Appearance",
@@ -168,7 +168,31 @@
                  "in_progress":"in_progress",
                  "start":"Start",
                   "end":"End",
-                  "serviceFromCustomer":"Service From Customer"
+                  "serviceFromCustomer":"Service From Customer",
+                     "notifications":"Notifications",
+                     "serverErrorDefault": "Something went wrong on our side. Please try again later.",
+                     "networkErrorDefault": "Please check your internet connection and try again.",
+                     "sessionExpired": "Your session has expired. Please log in again.",
+                     "validationErrorDefault": "Please check the entered data.",
+                     "cacheErrorDefault": "An error occurred while reading the saved data.",
+                     "connectionTimeout": "The connection timed out. Please try again.",
+                     "unexpectedServerResponse": "Unexpected response from the server.",
+                     "dataNotFound": "The requested data was not found.",
+                     "complaintTitleRequired": "Please enter the complaint title.",
+                     "complaintDescriptionRequired": "Please enter the complaint description.",
+                     "complaintSubmittedSuccess": "Complaint submitted successfully.",
+                     "leaveDatesRequired": "Please select the start and end dates.",
+                     "leaveReasonRequired": "Please enter the reason for the leave.",
+                     "leaveTypeRequired": "Please select the leave type.",
+                     "invalidDateFormat": "Invalid date format.",
+                     "endDateAfterStartDate": "The end date must be after the start date.",
+                     "retry": "Retry",
+                     "noServiceRequests": "No service requests",
+                      "noNotificationsYet":"No Notifications Yet",
+                      "whenYouarereceiveNotificationItWillBeSEEHere":"When you are receive notifications you are see here"
+
+
+
 
 
 

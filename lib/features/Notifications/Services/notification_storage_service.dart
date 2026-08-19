@@ -23,17 +23,38 @@ abstract class NotificationStorage {
   Future<void> addDeletedIds(List<String> ids);
 }
 
+/// تخزين الإشعارات محلياً — كل يوزر (حسب الإيميل المخزّن بعد تسجيل الدخول)
+/// إله مفتاح تخزين منفصل بالـ SharedPreferences، فما بيصير خلط بين سجلات
+/// المستخدمين المختلفين على نفس الجهاز.
 class SharedPrefsNotificationStorage implements NotificationStorage {
-  static const String _key = 'stored_notifications';
-  static const String _deletedKey = 'deleted_notification_ids';
+  static const String _keyPrefix = 'stored_notifications_';
+  static const String _deletedKeyPrefix = 'deleted_notification_ids_';
+  static const String _emailKey = 'user_email';
+
   static const int _maxStored = 100;
   static const int _maxDeletedStored = 300;
 
   Future<SharedPreferences> get _prefs => SharedPreferences.getInstance();
 
+  /// يرجّع معرّف اليوزر الحالي (الإيميل)، أو 'guest' إذا ما في يوزر مسجل دخول.
+  Future<String> _userSuffix() async {
+    final prefs = await _prefs;
+    final email = prefs.getString(_emailKey);
+    if (email == null || email.trim().isEmpty) return 'guest';
+    // توحيد الحالة (حروف صغيرة + إزالة مسافات) حتى ما يصير فرق بين
+    // Test@mail.com و test@mail.com
+    return email.trim().toLowerCase();
+  }
+
+  Future<String> _keyFor() async => '$_keyPrefix${await _userSuffix()}';
+
+  Future<String> _deletedKeyFor() async =>
+      '$_deletedKeyPrefix${await _userSuffix()}';
+
   @override
   Future<void> add(AppNotification notification) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final list = await getAll();
 
     if (list.any((n) => n.id == notification.id && n.id.isNotEmpty)) {
@@ -47,13 +68,14 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
     }
 
     final encoded = list.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
 
     if (notification.id.isNotEmpty) {
+      final deletedKey = await _deletedKeyFor();
       final deleted = await getDeletedIds();
       if (deleted.contains(notification.id)) {
         deleted.remove(notification.id);
-        await prefs.setStringList(_deletedKey, deleted.toList());
+        await prefs.setStringList(deletedKey, deleted.toList());
       }
     }
 
@@ -63,31 +85,35 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
   @override
   Future<List<AppNotification>> getAll() async {
     final prefs = await _prefs;
-    final raw = prefs.getStringList(_key) ?? [];
+    final key = await _keyFor();
+    final raw = prefs.getStringList(key) ?? [];
     return raw.map((s) => AppNotification.fromJson(jsonDecode(s))).toList();
   }
 
   @override
   Future<void> replaceAll(List<AppNotification> finalList) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final encoded = finalList.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
   }
 
   @override
   Future<void> markAsRead(int index) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final list = await getAll();
     if (index < 0 || index >= list.length) return;
     list[index].isRead = true;
     final encoded = list.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
     notificationsNotifier.value++;
   }
 
   @override
   Future<void> delete(int index) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final list = await getAll();
     if (index < 0 || index >= list.length) return;
 
@@ -97,25 +123,27 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
     }
 
     final encoded = list.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
     notificationsNotifier.value++;
   }
 
   @override
   Future<void> deleteAll() async {
     final prefs = await _prefs;
+    final key = await _keyFor();
 
     final list = await getAll();
     final ids = list.map((n) => n.id).where((id) => id.isNotEmpty).toList();
     await addDeletedIds(ids);
 
-    await prefs.remove(_key);
+    await prefs.remove(key);
     notificationsNotifier.value++;
   }
 
   @override
   Future<void> deleteById(String id) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final list = await getAll();
 
     list.removeWhere((n) => n.id == id);
@@ -125,19 +153,20 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
     }
 
     final encoded = list.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
     notificationsNotifier.value++;
   }
 
   @override
   Future<void> markAsReadById(String id) async {
     final prefs = await _prefs;
+    final key = await _keyFor();
     final list = await getAll();
     final index = list.indexWhere((n) => n.id == id);
     if (index == -1) return;
     list[index].isRead = true;
     final encoded = list.map((n) => jsonEncode(n.toJson())).toList();
-    await prefs.setStringList(_key, encoded);
+    await prefs.setStringList(key, encoded);
     notificationsNotifier.value++;
   }
 
@@ -150,7 +179,8 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
   @override
   Future<Set<String>> getDeletedIds() async {
     final prefs = await _prefs;
-    final raw = prefs.getStringList(_deletedKey) ?? [];
+    final deletedKey = await _deletedKeyFor();
+    final raw = prefs.getStringList(deletedKey) ?? [];
     return raw.toSet();
   }
 
@@ -163,6 +193,7 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
   Future<void> addDeletedIds(List<String> ids) async {
     if (ids.isEmpty) return;
     final prefs = await _prefs;
+    final deletedKey = await _deletedKeyFor();
     final current = await getDeletedIds();
     current.addAll(ids.where((e) => e.isNotEmpty));
 
@@ -171,6 +202,6 @@ class SharedPrefsNotificationStorage implements NotificationStorage {
       list = list.sublist(list.length - _maxDeletedStored);
     }
 
-    await prefs.setStringList(_deletedKey, list);
+    await prefs.setStringList(deletedKey, list);
   }
 }

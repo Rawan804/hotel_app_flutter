@@ -1,38 +1,41 @@
-library;
 class ServerException implements Exception {
   final String message;
   final int? statusCode;
 
   ServerException({
-    this.message = 'حدث خطأ من جهتنا، حاول مرة أخرى لاحقًا',
+    this.message = 'serverErrorDefault',
     this.statusCode,
   });
 }
+
 class NetworkException implements Exception {
   final String message;
 
   NetworkException({
-    this.message = 'تأكد من اتصالك بالإنترنت وحاول مرة أخرى',
+    this.message = 'networkErrorDefault',
   });
 }
+
 class UnauthorizedException implements Exception {
   final String message;
 
   UnauthorizedException({
-    this.message = 'انتهت صلاحية جلستك، سجل الدخول من جديد',
+    this.message = 'sessionExpired',
   });
 }
+
 class ValidationException implements Exception {
   final String message;
 
   ValidationException({
-    this.message = 'يرجى التحقق من البيانات المدخلة',
+    this.message = 'validationErrorDefault',
   });
 }
+
 class CacheException implements Exception {
   final String message;
 
   CacheException({
-    this.message = 'حدث خطأ أثناء قراءة البيانات المحفوظة',
+    this.message = 'cacheErrorDefault',
   });
 }

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../../../core/api/api.dart';
 import '../../../../core/error/Apierrorhandler.dart';
 import '../../../Auth/data/datasource/auth_local_datasource.dart';
+import '../../../language/data/datasources/language_local_datasource.dart';
 
 abstract class Leave_Remote_Data_Sources {
   Future<String> addLeaveRequest(
@@ -12,16 +13,17 @@ abstract class Leave_Remote_Data_Sources {
 const BASE_URL = ApiConstants.baseUrl;
 
 class Leave_Remote_Data_Sources_Impl implements Leave_Remote_Data_Sources {
+  final LanguageLocalDataSource localDataSource;
   final http.Client client;
   final AuthLocalDataSource authLocalDataSource;
   Leave_Remote_Data_Sources_Impl(
-      {required this.client, required this.authLocalDataSource});
+      {required this.client, required this.authLocalDataSource,required this.localDataSource});
 
   @override
   Future<String> addLeaveRequest(DateTime start_date, DateTime end_date,
       String reason, String type) async {
     final token = await authLocalDataSource.getToken();
-
+    final locale = await localDataSource.getLanguage();
     final response = await runHttpCall(
           () => client.post(
         Uri.parse("$BASE_URL/leaveRequests"),
@@ -29,6 +31,7 @@ class Leave_Remote_Data_Sources_Impl implements Leave_Remote_Data_Sources {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Accept-language': locale,
         },
         body: jsonEncode({
           "start_date": start_date.toIso8601String(),

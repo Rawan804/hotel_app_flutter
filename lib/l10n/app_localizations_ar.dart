@@ -60,9 +60,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pending => 'قيد الانتظار';
 
   @override
-  String get done => 'اكتمل';
-
-  @override
   String get news => 'الأخبار';
 
   @override
@@ -238,6 +235,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingDesc4 => 'ابقَ مسيطراً مع التذكيرات الذكية وسير العمل السلس';
+
+  @override
+  String get done => 'منتهية';
 
   @override
   String get left => 'متبقي';
@@ -469,4 +469,64 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get serviceFromCustomer => ' طلبات الزبائن';
+
+  @override
+  String get serverErrorDefault => 'حدث خطأ من جهتنا، حاول مرة أخرى لاحقًا';
+
+  @override
+  String get networkErrorDefault => ' تأكد من اتصالك بالإنترنت وحاول مرة أخرى ';
+
+  @override
+  String get sessionExpired => 'انتهت صلاحية جلستك، سجل الدخول من جديد';
+
+  @override
+  String get validationErrorDefault => 'يرجى التحقق من البيانات المدخلة';
+
+  @override
+  String get cacheErrorDefault => 'حدث خطأ أثناء قراءة البيانات المحفوظة';
+
+  @override
+  String get connectionTimeout => 'استغرق الاتصال وقتًا طويلاً، حاول مرة أخرى';
+
+  @override
+  String get unexpectedServerResponse => 'استجابة غير متوقعة من السيرفر';
+
+  @override
+  String get dataNotFound => 'لم يتم العثور على البيانات المطلوبة';
+
+  @override
+  String get complaintTitleRequired => 'يرجى كتابة عنوان الشكوى';
+
+  @override
+  String get complaintDescriptionRequired => 'يرجى كتابة وصف الشكوى';
+
+  @override
+  String get complaintSubmittedSuccess => 'تم إرسال الشكوى بنجاح';
+
+  @override
+  String get leaveDatesRequired => 'يرجى اختيار تاريخ البداية والنهاية';
+
+  @override
+  String get leaveReasonRequired => 'يرجى كتابة سبب الإجازة';
+
+  @override
+  String get leaveTypeRequired => 'يرجى تحديد نوع الإجازة';
+
+  @override
+  String get invalidDateFormat => 'صيغة التاريخ غير صحيحة';
+
+  @override
+  String get endDateAfterStartDate => 'تاريخ النهاية يجب أن يكون بعد تاريخ البداية';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get noServiceRequests => 'لا توجد طلبات';
+
+  @override
+  String get noNotificationsYet => 'لا يوجد إشعارات بعد';
+
+  @override
+  String get whenYouarereceiveNotificationItWillBeSEEHere => 'عندما تتلقى إشعارات، ستظهر هنا.';
 }

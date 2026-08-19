@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:hotel_app/features/news/presentation/widgets/BottomBar/bottombar.dart';
+import 'package:hotel_app/l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -142,12 +143,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final textTheme = theme.textTheme;
-
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       bottomNavigationBar: Bottombar(),
       appBar: AppBar(
         title: Text(
-          'الإشعارات',
+          l.notifications,
           style: textTheme.displayMedium?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         titleSpacing: 20,
@@ -173,14 +174,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'لا يوجد إشعارات بعد',
+              l.noNotificationsYet,
               style: textTheme.titleLarge?.copyWith(
                 color: colors.onSurface.withOpacity(0.6),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'عندما تتلقى إشعارات، ستظهر هنا.',
+             l.whenYouarereceiveNotificationItWillBeSEEHere,
               style: textTheme.bodyMedium?.copyWith(
                 color: colors.onSurface.withOpacity(0.5),
               ),

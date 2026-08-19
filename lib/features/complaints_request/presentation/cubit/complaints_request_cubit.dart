@@ -26,11 +26,11 @@ class ComplaintsRequestCubit extends Cubit<ComplaintsRequestState> {
 
   Future<void> addComplaints() async {
     if (titleController.text.trim().isEmpty) {
-      emit(ComplaintsRequestFailure('يرجى كتابة عنوان الشكوى'));
+      emit(ComplaintsRequestFailure('complaintTitleRequired'));
       return;
     }
     if (descController.text.trim().isEmpty) {
-      emit(ComplaintsRequestFailure('يرجى كتابة وصف الشكوى'));
+      emit(ComplaintsRequestFailure('complaintDescriptionRequired'));
       return;
     }
 

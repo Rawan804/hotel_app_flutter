@@ -17,7 +17,8 @@
   "rawanAidy":"روان عايدي",
   "tasks":"مهمة",
   "pending":"قيد الانتظار",
-  "done":"منجزة",
+
+
   "news":"الأخبار",
   "taptoviewdetails":"أنقر لرؤية التفاصيل ",
     "organizemotivateachieve":"رتب مهامك.طور أداءك.أنجز أكثر",
@@ -81,7 +82,7 @@
 
                                                 "onboardingTitle4": "لا تفوّت أي مهمة مهمة",
                                                 "onboardingDesc4": "ابقَ مسيطراً مع التذكيرات الذكية وسير العمل السلس",
-                                                "done":"اكتمل",
+                                                "done":"منتهية",
                                                 "left":"متبقي",
                                                 "all":"الكل",
                                                 "appearance":"المظهر",
@@ -164,7 +165,28 @@
                                                                 "in_progress":"قيد التنفيذ",
                                                                 "start":"بدء",
                                                                 "end":"إنهاء",
-                                                                "serviceFromCustomer":" طلبات الزبائن"
+                                                                "serviceFromCustomer":" طلبات الزبائن",
+                                                                "notifications":"الإشعارات",
+                                                                 "serverErrorDefault":"حدث خطأ من جهتنا، حاول مرة أخرى لاحقًا",
+                                                                "networkErrorDefault":" تأكد من اتصالك بالإنترنت وحاول مرة أخرى ",
+                                                                "sessionExpired" : "انتهت صلاحية جلستك، سجل الدخول من جديد",
+                                                                "validationErrorDefault":"يرجى التحقق من البيانات المدخلة",
+                                                                "cacheErrorDefault":"حدث خطأ أثناء قراءة البيانات المحفوظة",
+                                                                "connectionTimeout":"استغرق الاتصال وقتًا طويلاً، حاول مرة أخرى",
+                                                                "unexpectedServerResponse":"استجابة غير متوقعة من السيرفر",
+                                                                "dataNotFound":"لم يتم العثور على البيانات المطلوبة",
+                                                                "complaintTitleRequired":"يرجى كتابة عنوان الشكوى",
+                                                                "complaintDescriptionRequired":"يرجى كتابة وصف الشكوى",
+                                                                "complaintSubmittedSuccess":"تم إرسال الشكوى بنجاح",
+                                                                "leaveDatesRequired":"يرجى اختيار تاريخ البداية والنهاية",
+                                                                "leaveReasonRequired":"يرجى كتابة سبب الإجازة",
+                                                                "leaveTypeRequired":"يرجى تحديد نوع الإجازة",
+                                                                "invalidDateFormat":"صيغة التاريخ غير صحيحة",
+                                                                "endDateAfterStartDate":"تاريخ النهاية يجب أن يكون بعد تاريخ البداية",
+                                                                "retry": "إعادة المحاولة",
+                                                                "noServiceRequests": "لا توجد طلبات",
+                                                                "noNotificationsYet":"لا يوجد إشعارات بعد",
+                                                                "whenYouarereceiveNotificationItWillBeSEEHere":"عندما تتلقى إشعارات، ستظهر هنا."
 
 
 

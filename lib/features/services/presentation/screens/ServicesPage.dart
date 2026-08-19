@@ -44,7 +44,7 @@ class ServicesPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () =>
                         context.read<ServicesCubit>().getAllServices(),
-                    child: const Text('إعادة المحاولة'),
+                    child:  Text(l.retry),
                   ),
                 ],
               ),
@@ -62,9 +62,9 @@ class ServicesPage extends StatelessWidget {
                   Expanded(
                     child: state.services.isEmpty
                         ? ListView(
-                      children: const [
+                      children:  [
                         SizedBox(height: 120),
-                        Center(child: Text('لا يوجد طلبات ')),
+                        Center(child: Text(l.noServiceRequests)),
                       ],
                     )
                         : ListView.builder(

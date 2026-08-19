@@ -50,7 +50,7 @@ class TasksPage extends StatelessWidget {
 
         return ListView.builder(
           padding: const EdgeInsets.only(bottom: 20),
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: false,
           itemCount: tasks.length,
           itemBuilder: (context, index) {

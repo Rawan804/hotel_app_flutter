@@ -9,27 +9,35 @@ String formatDate(String dateStr) {
 }
 
 Color getStatusColor(String status) {
-  switch (status) {
-    case 'Completed':
-      return Colors.green;
+  switch (status.trim().toLowerCase()) {
     case 'completed':
-      return Colors.green;
     case 'منتهية':
+    case 'مكتمل':
+    case 'مكتملة':
       return Colors.green;
-    case 'In Progress':
-      return Colors.orange;
+    case 'in progress':
     case 'in_progress':
-      return Colors.orange;
     case 'جارٍ التنفيذ':
+    case 'جاري التنفيذ':
       return Colors.orange;
-    case 'Pending':
-      return Colors.red;
     case 'pending':
-      return Colors.red;
     case 'قيد الانتظار':
       return Colors.red;
-
     default:
       return Colors.grey;
   }
+}
+
+/// يفحص إذا حالة المهمة "مكتملة"، بمعزل عن اللغة الحالية للتطبيق.
+/// استخدم هاي الدالة دايمًا بدل مقارنة status.toLowerCase() == 'completed'
+/// مباشرة، لأنه status نص مترجم من الباك اند وبيختلف شكله حسب اللغة.
+bool isTaskCompleted(String status) {
+  const completedVariants = {'completed', 'منتهية', 'مكتمل', 'مكتملة'};
+  return completedVariants.contains(status.trim().toLowerCase());
+}
+
+/// نفس الفكرة، لحالة "قيد الانتظار" - استخدمها بدل status == 'pending' مباشرة.
+bool isTaskPending(String status) {
+  const pendingVariants = {'pending', 'قيد الانتظار'};
+  return pendingVariants.contains(status.trim().toLowerCase());
 }

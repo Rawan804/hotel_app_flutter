@@ -60,9 +60,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pending => 'Pending';
 
   @override
-  String get done => 'done';
-
-  @override
   String get news => 'News';
 
   @override
@@ -238,6 +235,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingDesc4 => 'Stay in control with smart reminders and seamless workflow management';
+
+  @override
+  String get done => 'Completed';
 
   @override
   String get left => 'left';
@@ -469,4 +469,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serviceFromCustomer => 'Service From Customer';
+
+  @override
+  String get serverErrorDefault => 'Something went wrong on our side. Please try again later.';
+
+  @override
+  String get networkErrorDefault => 'Please check your internet connection and try again.';
+
+  @override
+  String get sessionExpired => 'Your session has expired. Please log in again.';
+
+  @override
+  String get validationErrorDefault => 'Please check the entered data.';
+
+  @override
+  String get cacheErrorDefault => 'An error occurred while reading the saved data.';
+
+  @override
+  String get connectionTimeout => 'The connection timed out. Please try again.';
+
+  @override
+  String get unexpectedServerResponse => 'Unexpected response from the server.';
+
+  @override
+  String get dataNotFound => 'The requested data was not found.';
+
+  @override
+  String get complaintTitleRequired => 'Please enter the complaint title.';
+
+  @override
+  String get complaintDescriptionRequired => 'Please enter the complaint description.';
+
+  @override
+  String get complaintSubmittedSuccess => 'Complaint submitted successfully.';
+
+  @override
+  String get leaveDatesRequired => 'Please select the start and end dates.';
+
+  @override
+  String get leaveReasonRequired => 'Please enter the reason for the leave.';
+
+  @override
+  String get leaveTypeRequired => 'Please select the leave type.';
+
+  @override
+  String get invalidDateFormat => 'Invalid date format.';
+
+  @override
+  String get endDateAfterStartDate => 'The end date must be after the start date.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get noServiceRequests => 'No service requests';
+
+  @override
+  String get noNotificationsYet => 'No Notifications Yet';
+
+  @override
+  String get whenYouarereceiveNotificationItWillBeSEEHere => 'When you are receive notifications you are see here';
 }

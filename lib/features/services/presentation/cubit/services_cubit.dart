@@ -44,7 +44,7 @@ class ServicesCubit extends Cubit<ServicesState> {
     emit(ServicesLoading());
     final result = await getAllServicesUseCase();
     result.fold(
-          (failure) => emit(ServiceFail(message: 'فشل تحميل الخدمات')),
+          (failure) => emit(ServiceFail(message: failure.message)),
           (serviceList) {
         cachedServices = serviceList;
         emit(_buildSuccessState());
@@ -65,7 +65,7 @@ class ServicesCubit extends Cubit<ServicesState> {
     loadingIds.remove(id);
 
     result.fold(
-          (failure) => emit(ServiceFail(message: 'فشل بدء الخدمة')),
+          (failure) => emit(ServiceFail(message: failure.message)),
           (updated) {
         cachedServices =
             cachedServices.map((s) => s.id == id ? updated : s).toList();
@@ -82,7 +82,7 @@ class ServicesCubit extends Cubit<ServicesState> {
     loadingIds.remove(id);
 
     result.fold(
-          (failure) => emit(ServiceFail(message: 'فشل إنهاء الخدمة')),
+          (failure) => emit(ServiceFail(message: failure.message)),
           (updated) {
         cachedServices =
             cachedServices.map((s) => s.id == id ? updated : s).toList();

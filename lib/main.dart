@@ -13,6 +13,7 @@ import 'Theme/theme_state.dart';
 import 'core/di/ injection_container.dart';
 import 'core/services.dart';
 import 'core/theme/app_theme.dart';
+import 'core/util/AppMesaage.dart';
 import 'features/Auth/presentation/cubit/create_new_password_cubit.dart';
 import 'features/Auth/presentation/cubit/forget_password_cubit.dart';
 import 'features/Auth/presentation/cubit/login_cubit.dart';
@@ -29,6 +30,7 @@ import 'features/news/presentation/cubit/news_cubit.dart';
 import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'features/onboarding/presentation/screens/splash_screen.dart';
 import 'l10n/app_localizations.dart';
+
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -99,6 +101,7 @@ class MyApp extends StatelessWidget {
           builder: (context, langState) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              scaffoldMessengerKey: rootScaffoldMessengerKey, // ⭐ جديد
               theme: AppThemes.build(
                 themeState.themeType,
                 isArabic: langState.locale.languageCode == 'ar',

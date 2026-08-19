@@ -1,14 +1,19 @@
 import 'package:bloc/bloc.dart';
-import 'package:hotel_app/features/leave_request/domain/use_cases/add_leave_request_use_case.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_app/features/leave_request/domain/use_cases/add_leave_request_use_case.dart';
 
 import 'leave_request_state.dart';
 
 class LeaveRequestCubit extends Cubit<LeaveRequestState> {
+  final AddLeaveRequestUseCase addLeaveRequestUseCase;
+
   final TextEditingController startDate = TextEditingController();
   final TextEditingController endDate = TextEditingController();
   final TextEditingController reason = TextEditingController();
   final TextEditingController leaveType = TextEditingController();
+
+  LeaveRequestCubit(this.addLeaveRequestUseCase)
+      : super(LeaveRequestStateInitial());
 
   @override
   Future<void> close() {
@@ -26,22 +31,20 @@ class LeaveRequestCubit extends Cubit<LeaveRequestState> {
     leaveType.clear();
   }
 
-  final AddLeaveRequestUseCase addLeaveRequestUseCase;
-  LeaveRequestCubit(this.addLeaveRequestUseCase)
-      : super(LeaveRequestStateInitial());
-
   Future<void> addLeaveRequest() async {
-    // تحقق محلي من الحقول قبل إرسال أي طلب للسيرفر
+    // تحقق محلي من الحقول قبل إرسال الطلب للسيرفر
     if (startDate.text.isEmpty || endDate.text.isEmpty) {
-      emit(LeaveRequestFailure('يرجى اختيار تاريخ البداية والنهاية'));
+      emit(LeaveRequestFailure('leaveDatesRequired'));
       return;
     }
+
     if (reason.text.trim().isEmpty) {
-      emit(LeaveRequestFailure('يرجى كتابة سبب الإجازة'));
+      emit(LeaveRequestFailure('leaveReasonRequired'));
       return;
     }
+
     if (leaveType.text.trim().isEmpty) {
-      emit(LeaveRequestFailure('يرجى تحديد نوع الإجازة'));
+      emit(LeaveRequestFailure('leaveTypeRequired'));
       return;
     }
 
@@ -49,17 +52,24 @@ class LeaveRequestCubit extends Cubit<LeaveRequestState> {
     final DateTime? end = DateTime.tryParse(endDate.text);
 
     if (start == null || end == null) {
-      emit(LeaveRequestFailure('صيغة التاريخ غير صحيحة'));
+      emit(LeaveRequestFailure('invalidDateFormat'));
       return;
     }
+
     if (end.isBefore(start)) {
-      emit(LeaveRequestFailure('تاريخ النهاية يجب أن يكون بعد تاريخ البداية'));
+      emit(LeaveRequestFailure('endDateAfterStartDate'));
       return;
     }
 
     emit(LeaveRequestLoading());
-    final result =
-    await addLeaveRequestUseCase(start, end, reason.text, leaveType.text);
+
+    final result = await addLeaveRequestUseCase(
+      start,
+      end,
+      reason.text,
+      leaveType.text,
+    );
+
     result.fold(
           (failure) {
         emit(LeaveRequestFailure(failure.message));

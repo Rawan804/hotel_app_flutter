@@ -5,6 +5,8 @@ import 'package:hotel_app/features/Auth/presentation/cubit/logout_state.dart';
 import 'package:hotel_app/features/Auth/presentation/pages/login_page.dart';
 import 'package:hotel_app/features/news/presentation/widgets/BottomBar/bottombar.dart';
 import '../../../../app_theme.dart';
+
+import '../../../../core/util/AppMesaage.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../language/presentation/cubit/language_cubit.dart';
 import '../../../language/presentation/cubit/language_state.dart';
@@ -13,8 +15,8 @@ import '../../../news/presentation/cubit/BottomBar Cubit/bottomba_cubit.dart';
 import 'complaints_page.dart';
 
 class ProfilePage extends StatelessWidget {
-
   const ProfilePage({super.key});
+
   void _showLanguagePicker(BuildContext context) {
     final cubit = context.read<LanguageCubit>();
 
@@ -35,7 +37,7 @@ class ProfilePage extends StatelessWidget {
             children: [
               const Text(
                 'Language / اللغة',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
               ),
               const SizedBox(height: 20),
               BlocBuilder<LanguageCubit, LanguageState>(
@@ -44,11 +46,10 @@ class ProfilePage extends StatelessWidget {
                     title: 'العربية',
                     color: Colors.black,
                     subtitle: 'Arabic',
-                  isSelected: state.locale.languageCode == 'ar',
+                    isSelected: state.locale.languageCode == 'ar',
                     onTap: () async {
                       await cubit.changeLanguage('ar');
                       Navigator.pop(context);
-
                     }
                 ),
               ),
@@ -56,15 +57,14 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: 12),
               BlocBuilder<LanguageCubit, LanguageState>(
                 builder: (ctx, state) => _LanguageOption(
-                  flag: '🇺🇸',
-                  title: 'English',
-                  subtitle: 'الإنجليزية',
-                  color: Colors.black,
-                  isSelected: state.locale.languageCode == 'en',
+                    flag: '🇺🇸',
+                    title: 'English',
+                    subtitle: 'الإنجليزية',
+                    color: Colors.black,
+                    isSelected: state.locale.languageCode == 'en',
                     onTap: () async {
                       await cubit.changeLanguage('en');
                       Navigator.pop(context);
-
                     }
                 ),
               ),
@@ -76,6 +76,7 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
@@ -94,8 +95,8 @@ class ProfilePage extends StatelessWidget {
                   _MenuCard(
                     items: [
                       _MenuItem(
-                        icon: Icons.task_alt,
-                        label: l.myTasks,
+                          icon: Icons.task_alt,
+                          label: l.myTasks,
                           onTap: () {
                             context.read<BottomNavigationCubit>().changeIndex(1);
                           }
@@ -109,44 +110,52 @@ class ProfilePage extends StatelessWidget {
                   _MenuCard(
                     items: [
                       _MenuItem(
-                        icon: Icons.notifications_none_outlined,
-                        label: l.notifications,
-    onTap: () {
-    context.read<BottomNavigationCubit>().changeIndex(4);
-    }
-
+                          icon: Icons.notifications_none_outlined,
+                          label: l.notifications,
+                          onTap: () {
+                            context.read<BottomNavigationCubit>().changeIndex(4);
+                          }
                       ),
                       // Leaves Request
                       _MenuItem(
                         icon: Icons.request_quote_outlined,
                         label: l.leavesRequest,
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (_) =>LeaveRequestPage()
-                        ),
+                        onTap: () async {
+                          final message = await showModalBottomSheet<String>(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => LeaveRequestPage(),
+                          );
+
+                          if (message != null && context.mounted) {
+                            showGlobalSnackBar(message);
+                          }
+                        },
                       ),
 
-// Complaint Request
+                      // Complaint Request
                       _MenuItem(
                         icon: Icons.add,
                         label: l.complaintRequest,
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (_) => ComplaintForm()
-                        ),
+                        onTap: () async {
+                          final message = await showModalBottomSheet<String>(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => ComplaintForm(),
+                          );
+
+                          if (message != null && context.mounted) {
+                            showGlobalSnackBar(message);
+                          }
+                        },
                       ),
-                      // Complaint Request — موجود قبل، ما تغير
-
-
 
                       _MenuItem(
                         icon: Icons.language_outlined,
                         label: l.language,
-                        onTap: () => _showLanguagePicker(context), // ← هاد الإضافة الوحيدة
+                        onTap: () => _showLanguagePicker(context),
                       ),
                       _MenuItem(
                         icon: Icons.palette_outlined,
@@ -199,32 +208,32 @@ class ProfilePage extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           BlocListener<LogoutCubit, LogoutState>(
-  listener: (context, state) {
-if(state is LogoutSuccess){
-  Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(
-      builder: (_) =>  LoginPage(),
-    ),
-        (route) => false,
-  );
-}
-if (state is LogoutFailure) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(state.message)),
-  );
-}
-  },
-  child: TextButton(
-            onPressed: () {
-              context.read<LogoutCubit>().logout();
+            listener: (context, state) {
+              if (state is LogoutSuccess) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => LoginPage(),
+                  ),
+                      (route) => false,
+                );
+              }
+              if (state is LogoutFailure) {
+                // ⭐ استخدمنا الـ Global Messenger هون كمان للاتساق —
+                // هاي كانت جوا AlertDialog، نفس مبدأ المشكلة.
+                showGlobalSnackBar(state.message);
+              }
             },
-            child: const Text(
-              'Sign Out',
-              style: TextStyle(color: Color(0xFFBF4E30)),
+            child: TextButton(
+              onPressed: () {
+                context.read<LogoutCubit>().logout();
+              },
+              child: const Text(
+                'Sign Out',
+                style: TextStyle(color: Color(0xFFBF4E30)),
+              ),
             ),
           ),
-),
         ],
       ),
     );
@@ -239,7 +248,6 @@ class _CoverHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: [
         // ── Cover image ───────────────────────────────────────────
         SizedBox(
@@ -329,7 +337,6 @@ class _MenuCard extends StatelessWidget {
       ),
     );
   }
-
 }
 
 // ─── Data class ──────────────────────────────────────────────────────────────
@@ -347,6 +354,7 @@ class _MenuItem {
     this.onTap,
   });
 }
+
 class _LanguageOption extends StatelessWidget {
   final String flag;
   final String title;
@@ -390,9 +398,9 @@ class _LanguageOption extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black
                   ),
                 ),
                 Text(

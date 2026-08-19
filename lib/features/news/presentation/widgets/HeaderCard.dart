@@ -94,9 +94,9 @@ class HeaderCard extends StatelessWidget {
               children: [
                 _StatItem(title: l.tasks, value: totalItems),
                 _Divider(),
-                _StatItem(title: l.pending, value: totalItems - completedItems),
+                _StatItem(title: l.in_progress, value: totalItems - completedItems),
                 _Divider(),
-                _StatItem(title: l.done, value: completedItems),
+                _StatItem(title: l!.done, value: completedItems),
               ],
             ),
           ),

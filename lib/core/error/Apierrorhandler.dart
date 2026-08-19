@@ -7,17 +7,21 @@ Future<http.Response> runHttpCall(
     Future<http.Response> Function() call,
     ) async {
   try {
-    return await call().timeout(const Duration(seconds: 20));
+    return await call().timeout(
+      const Duration(seconds: 20),
+    );
   } on SocketException {
     throw NetworkException();
   } on TimeoutException {
     throw NetworkException(
-      message: 'استغرق الاتصال وقتًا طويلاً، حاول مرة أخرى',
+      message: 'connectionTimeout',
     );
   } on HttpException {
     throw NetworkException();
   } on FormatException {
-    throw ServerException(message: 'استجابة غير متوقعة من السيرفر');
+    throw ServerException(
+      message: 'unexpectedServerResponse',
+    );
   }
 }
 Never throwApiException(http.Response response) {
@@ -27,20 +31,23 @@ Never throwApiException(http.Response response) {
     case 401:
     case 403:
       throw UnauthorizedException(
-        message: serverMessage ?? 'انتهت صلاحية جلستك، سجل الدخول من جديد',
+        message: serverMessage ?? 'sessionExpired',
       );
+
     case 422:
       throw ValidationException(
-        message: serverMessage ?? 'يرجى التحقق من البيانات المدخلة',
+        message: serverMessage ?? 'validationErrorDefault',
       );
+
     case 404:
       throw ServerException(
-        message: serverMessage ?? 'لم يتم العثور على البيانات المطلوبة',
+        message: serverMessage ?? 'dataNotFound',
         statusCode: response.statusCode,
       );
+
     default:
       throw ServerException(
-        message: serverMessage ?? 'حدث خطأ من جهتنا، حاول مرة أخرى لاحقًا',
+        message: serverMessage ?? 'serverErrorDefault',
         statusCode: response.statusCode,
       );
   }

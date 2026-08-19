@@ -6,6 +6,7 @@ import 'package:hotel_app/features/news/presentation/widgets/HeaderCard.dart';
 import 'package:hotel_app/features/news/presentation/widgets/NewsCards.dart';
 import 'package:hotel_app/features/tasks/presentation/pages/TasksPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../core/util/date_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../tasks/domain/entites/task.dart';
 import '../../../tasks/presentation/cubit/task_details_cubit.dart';
@@ -47,63 +48,80 @@ class _HomepageState extends State<Homepage> {
       bottomNavigationBar: const Bottombar(),
       body: RefreshIndicator(
         onRefresh: () async {
-          await context.read<NewsCubit>().getAllNews();
-          await context.read<TaskDetailsCubit>().getAllTask();
+          await Future.wait([
+            context.read<NewsCubit>().getAllNews(),
+            context.read<TaskDetailsCubit>().getAllTask(),
+          ]);
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BlocBuilder<TaskDetailsCubit, TaskState>(
-              builder: (context, state) {
-                List<TaskEntity> tasks = [];
-                if (state is TaskSuccses) {
-                  tasks = state.tasks;
-                } else if (state is TaskToggle) {
-                  tasks = context.read<TaskDetailsCubit>().cachedTasks;
-                }
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BlocBuilder<TaskDetailsCubit, TaskState>(
+                builder: (context, state) {
+                  List<TaskEntity> tasks = [];
 
-                final totalTasks = tasks.length;
-                final completedTasks = tasks
-                    .where((task) => task.status.toLowerCase() == 'completed')
-                    .length;
+                  if (state is TaskSuccses) {
+                    tasks = state.tasks;
+                  } else if (state is TaskToggle) {
+                    tasks = context.read<TaskDetailsCubit>().cachedTasks;
+                  }
 
-                return FutureBuilder<Map<String, String?>>(
-                  future: _getUserData(),
-                  builder: (context, snapshot) {
-                    return HeaderCard(
-                      name: snapshot.data?['name'] ?? '',
-                      imageUrl:
-                      snapshot.data?['image'] ?? 'https://i.pravatar.cc/179',
-                      totalItems: totalTasks,
-                      completedItems: completedTasks,
-                    );
-                  },
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 15, right: 30, left: 20, bottom: 8),
-              child: Text(
-                l.hotelNews,
-                style: theme.textTheme.displayMedium?.copyWith(fontSize: 18),
+                  final totalTasks = tasks.length;
+
+                  final completedTasks = tasks
+                      .where((task) => isTaskCompleted(task.status))
+                      .length;
+
+                  return FutureBuilder<Map<String, String?>>(
+                    future: _getUserData(),
+                    builder: (context, snapshot) {
+                      return HeaderCard(
+                        name: snapshot.data?['name'] ?? '',
+                        imageUrl: snapshot.data?['image'] ??
+                            'https://i.pravatar.cc/179',
+                        totalItems: totalTasks,
+                        completedItems: completedTasks,
+                      );
+                    },
+                  );
+                },
               ),
-            ),
-            const SizedBox(
-              height: 220,
-              child: Newscards(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                l.yourTasks,
-                style: theme.textTheme.displayMedium?.copyWith(fontSize: 18),
+
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  right: 30,
+                  left: 20,
+                  bottom: 8,
+                ),
+                child: Text(
+                  l.hotelNews,
+                  style: theme.textTheme.displayMedium?.copyWith(
+                    fontSize: 18,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: TasksPage(),
-            ),
-          ],
+
+              const SizedBox(
+                height: 220,
+                child: Newscards(),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  l.yourTasks,
+                  style: theme.textTheme.displayMedium?.copyWith(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+
+              TasksPage(),
+            ],
+          ),
         ),
       ),
     );
