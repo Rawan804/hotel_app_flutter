@@ -105,7 +105,8 @@ Future<void> init() async {
   sl.registerLazySingleton<ComplaintsRemoteDataSources>(
         () => ComplaintsRemoteDataSourcesImpl(
           client: sl(),
-          authLocalDataSource: sl()
+          authLocalDataSource: sl(),
+            localDataSource:sl()
     ),
   );
   sl.registerLazySingleton<ComplaintsRepositories>(

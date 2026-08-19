@@ -4,6 +4,7 @@ import 'package:hotel_app/features/Auth/data/datasource/auth_local_datasource.da
 import 'package:http/http.dart' as http;
 import '../../../../core/api/api.dart';
 import '../../../../core/error/Apierrorhandler.dart';
+import '../../../language/data/datasources/language_local_datasource.dart';
 
 
 abstract class ComplaintsRemoteDataSources {
@@ -15,15 +16,17 @@ const BASE_URL = ApiConstants.baseUrl;
 class ComplaintsRemoteDataSourcesImpl implements ComplaintsRemoteDataSources {
   final AuthLocalDataSource authLocalDataSource;
   final http.Client client;
+  final LanguageLocalDataSource localDataSource;
   ComplaintsRemoteDataSourcesImpl({
     required this.client,
     required this.authLocalDataSource,
+    required this.localDataSource
   });
 
   @override
   Future<Unit> addComplaint(String title, String description) async {
     final token = await authLocalDataSource.getToken();
-
+    final locale = await localDataSource.getLanguage();
     final response = await runHttpCall(
           () => client.post(
         Uri.parse("$BASE_URL/complaints"),
@@ -31,6 +34,7 @@ class ComplaintsRemoteDataSourcesImpl implements ComplaintsRemoteDataSources {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Accept-language': locale,
         },
         body: jsonEncode({
           "title": title,
